@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="/static/main.css" />
+  <link type="text/css" rel="stylesheet" href="/static/Website-1342421134359.css" />
+  <link type="text/css" rel="stylesheet" href="/static/After20Signing20In-1342421134359.css" />
+  <link type="text/css" rel="stylesheet" href="/static/include.css" />
+
+  <title>Cravel</title>
+
+</head>
+
+<body>
+  <div class="logo">
+  	<a href="/" class="main-title">
+  	  Cravel
+  	</a>
+  </div>
+
+  <div class="search-box">
+	  <form action='' method="get">
+	  	<input class='' type='text' name="search" value="Crazy to Travel - simply ask"/>
+	  	<input class="" type='submit' value='Search'/>
+
+	  </form>
+  </div>
+
+  <div class="login-area">
+    {% if user %}
+      <a class="login-link" href="/_edit{{path}}">edit</a>&nbsp;|&nbsp;<a class="login-link" href="/_history{{path}}">history</a>&nbsp;&nbsp;&nbsp;&nbsp;{{user.name}} (<a class="login-link" href="/logout">logout</a>)
+    {% else %}
+      <a class="login-link" href="/login">login</a>
+      |
+      <a class="login-link" href="/signup">signup</a>
+    {% endif %}
+  </div>
+  <br>
+  <br>
+  <div id="content">
+  {% block content %}
+  {% endblock %}
+
+
+  </div>
+</body>
+
+</html>

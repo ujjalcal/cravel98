@@ -1,0 +1,18 @@
+<div>
+  <div>
+  	<div>
+		<a href="">{{t.name}}</a>
+    </div>
+
+    <div >
+
+
+	  {% for destination in t.destinations %}
+	    {{ destination.render() | safe }}
+	    <br><br>
+	  {% endfor %}
+
+    </div>
+  </div>
+
+</div>

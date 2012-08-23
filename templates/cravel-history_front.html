@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  {% for w in wikis %}
+    {{ w.render_hist() | safe }}
+    <br><br>
+  {% endfor %}
+
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+<div class="post-heading">
+	<div class="post-topics">Questions</div>
+    {% for question in questions %}
+	    {{ question.render() | safe }}
+	    <br><br>
+	  {% endfor %}
+
+</div>
+
+<div class="post-heading">
+	<div class="post-topics">Trips</div>
+    {% for trip in trips %}
+	    {{ trip.render() | safe }}
+	    <br><br>
+	  {% endfor %}
+
+</div>
+
+<div class="post-heading">
+	<div class="post-topics">Destinations</div>
+    {% for destination in destinations %}
+	    {{ destination.render() | safe }}
+	    <br><br>
+	  {% endfor %}
+</div>
+
+{% endblock %}
+

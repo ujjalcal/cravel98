@@ -1,0 +1,17 @@
+<div class="post">
+  <div class="post-heading">
+    <div class="post-title">
+		<a class="post-title" >{{q.subject}}</a>
+		<a href="{{q.path}}?v={{q.version}}">view</a>
+		<a href="/_edit{{q.path}}?v={{q.version}}">edit</a>
+    </div>
+
+    <div class="post-date">
+      {{q.created.strftime("%b %d, %Y")}}
+    </div>
+  </div>
+
+  <div class="post-content">
+    {{q._render_text | safe}}
+  </div>
+</div>
