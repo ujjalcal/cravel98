@@ -23,3 +23,8 @@ class Answer(ndb.Model):
 	    logging.error(ans)	
 	   #self._render_text = self.content.replace('\n', '<br>')
 	    return render_jinja_str("cravel-content-answer.html", a = ans)
+
+	@classmethod
+	def renderAnsForm(test=False):
+	    logging.error('in render Answer form:')
+	    return render_jinja_str("answerForm.html")

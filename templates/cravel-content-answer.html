@@ -5,15 +5,18 @@
 
 	  {{ a.ansText }}
 
+
 	  {% for d in a.destinations %}
 	    {{ d.render() | safe }}
-	    <br><br>
+	    <br>
 	  {% endfor %}
 
+
+	  <br><br>
 	  {% if trips %}
 	  {% for t in a.trips %}
 	    {{ t.render() | safe }}
-	    <br><br>
+	    <br>
 	  {% endfor %}
 	  {% endif %}
 

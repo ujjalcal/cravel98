@@ -543,7 +543,7 @@ class CravelPage(BlogHandler):
         	question = questionQuery.fetch()
         	logging.error(question)
         	#BlogHandler.render()#
-        	self.render('cravel-page.html', question = question[0])
+        	self.render('cravel-page.html', question = question[0], view=True)
     	else:
 	    	self.redirect('/error')
 	    	
@@ -593,7 +593,7 @@ app = webapp2.WSGIApplication([#('/', MainPage),
                                ('/logout', Logout),
 			       #('/question' + PAGE_RE, EditWiki),
 			       #('/_history' + PAGE_RE, HistoryWiki),
-                               ('/cravel', Cravel),
+                               ('/', Cravel),
                                ('/question', NewQuestion),
                                ('/error', Error),
                                (PAGE_RE, CravelPage),
