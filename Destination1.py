@@ -12,7 +12,7 @@ class Destination1(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add = True)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
 	
-	def render(self):
+	def render(self, view=False):
 	    logging.error('in Destination render')
 	   # self._render_text = self.content.replace('\n', '<br>')
 	    return render_jinja_str("cravel-content.html", d = self)

@@ -2,21 +2,22 @@
   <div>
 
     <div>
-		<br><br><br>
-		<a href="">{{q.question}}</a>
+		<br>
+		<a href="{{q.qurl}}">{{q.question}}</a>
     </div>
 
     <div >
-		<br>
+		{% if view: %}
+
 		{% if q.answers %}
-	    {{ q.answers.render() | safe }}
+	    {{ q.answers.render(view) | safe }}
 	    {% endif%}
 
-		{% if view: %}
 		{{ q.answers.renderAnsForm()|safe}}
+	    <br><br>
+
 		{% endif %}
 
-	    <br><br>
 
     </div>
   </div>

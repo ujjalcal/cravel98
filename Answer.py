@@ -18,7 +18,7 @@ class Answer(ndb.Model):
 	lastModified = ndb.DateTimeProperty(auto_now = True)
 	
 	
-	def render(ans):
+	def render(ans, view=False):
 	    logging.error('in Answer render:')
 	    logging.error(ans)	
 	   #self._render_text = self.content.replace('\n', '<br>')

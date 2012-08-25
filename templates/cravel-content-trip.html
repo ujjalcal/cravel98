@@ -5,13 +5,14 @@
     </div>
 
     <div >
-
+	  {%if view%}
 
 	  {% for destination in t.destinations %}
-	    {{ destination.render() | safe }}
+	    {{ destination.render(view) | safe }}
 	    <br><br>
 	  {% endfor %}
 
+	  {% endif %}
     </div>
   </div>
 
