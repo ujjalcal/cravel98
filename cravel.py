@@ -7,11 +7,19 @@ from string import letters
 import json
 import logging
 import time
+import urllib2
+import urllib
 
 import webapp2
 import jinja2
-#import cravelModel
-#from cravelModel import Destination
+
+from Post import *
+from Users import *
+from Question import *
+from Answer import *
+from Destination1 import *
+from Trip import *
+from Base import *
 
 from google.appengine.ext import db
 from google.appengine.ext import ndb
@@ -21,37 +29,35 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
-secret = 'fart'
+
 db_timer = time.time()
 
-def render_str(template, **params):
+def render_str_final(template, **params):
     t = jinja_env.get_template(template)
     return t.render(params)
 
-def make_secure_val(val):
-    return '%s|%s' % (val, hmac.new(secret, val).hexdigest())
+def render_post(response, post):
+    response.out.write('<b>' + post.subject + '</b><br>')
+    response.out.write(post.content)
 
-def check_secure_val(secure_val):
-    val = secure_val.split('|')[0]
-    if secure_val == make_secure_val(val):
-        return val
+
 
 class BlogHandler(webapp2.RequestHandler):
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
 
     ##injecting params
-    def render_str(self, template, **params):
+    def render_str_inject(self, template, **params):
     	global db_timer
         params['user'] = self.user
         params['curr_time'] = round(time.time() - db_timer)
         params['path'] = self.request.path
       
-        return render_str(template, **params)
+      	logging.error(params)
+        return render_str_final(template, **params)
 
-    ##before actual writing inject prams##
     def render(self, template, **kw):
-        self.write(self.render_str(template, **kw))
+        self.write(self.render_str_inject(template, **kw))
 
     def render_json(self, d):
         json_txt = json.dumps(d)
@@ -79,107 +85,9 @@ class BlogHandler(webapp2.RequestHandler):
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.by_id(int(uid))
 
-def render_post(response, post):
-    response.out.write('<b>' + post.subject + '</b><br>')
-    response.out.write(post.content)
-
 class MainPage(BlogHandler):
   def get(self):
       self.write('Hi this is the Cravel - the Youtube for Travel. <br><br> Please goto the <a href="/feed">feed</a> url below to see recent postings.')
-
-
-##### user stuff
-def make_salt(length = 5):
-    return ''.join(random.choice(letters) for x in xrange(length))
-
-def make_pw_hash(name, pw, salt = None):
-    if not salt:
-        salt = make_salt()
-    h = hashlib.sha256(name + pw + salt).hexdigest()
-    return '%s,%s' % (salt, h)
-
-def valid_pw(name, password, h):
-    salt = h.split(',')[0]
-    return h == make_pw_hash(name, password, salt)
-
-def users_key(group = 'default'):
-    return db.Key.from_path('users', group)
-
-class User(db.Model):
-    name = db.StringProperty(required = True)
-    pw_hash = db.StringProperty(required = True)
-    email = db.StringProperty()
-
-    @classmethod
-    def by_id(cls, uid):
-        return User.get_by_id(uid, parent = users_key())
-
-    @classmethod
-    def by_name(cls, name):
-        u = User.all().filter('name =', name).get()
-        return u
-
-    @classmethod
-    def register(cls, name, pw, email = None):
-        pw_hash = make_pw_hash(name, pw)
-        return User(parent = users_key(),
-                    name = name,
-                    pw_hash = pw_hash,
-                    email = email)
-
-    @classmethod
-    def login(cls, name, pw):
-        u = cls.by_name(name)
-        if u and valid_pw(name, pw, u.pw_hash):
-            return u
-
-
-##### blog stuff
-
-def blog_key(name = 'default'):
-    return db.Key.from_path('blogs', name)
-
-class Post(db.Model):
-    subject = db.StringProperty(required = True)
-    content = db.TextProperty(required = True)
-    created = db.DateTimeProperty(auto_now_add = True)
-    last_modified = db.DateTimeProperty(auto_now = True)
-
-    def render(self):
-        self._render_text = self.content.replace('\n', '<br>')
-        return render_str("post.html", p = self)
-    
-    def as_dict(self):
-        time_fmt = '%c'
-        d = {'subject': self.subject,
-             'content': self.content,
-             'created': self.created.strftime(time_fmt),
-             'last_modified': self.last_modified.strftime(time_fmt)}
-        return d
-
-    @classmethod
-    def permalink(self, post_id):
-        #key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-        #post = db.get(key)
-    	posts = list(self.allPosts())
-    	for post in posts:
-    		if post.key().id() == int(post_id):
-        		return post
-	
-    @classmethod
-    def allPosts(self, update=False):
-    	key = 'top'
-    	posts = memcache.get(key)
-    	
-    	if posts is None or update:
-    		logging.error('DB Query')
-    		posts = Post.all().order('-created')
-    		#posts = list(posts)
-    		memcache.set(key, posts)
-	else:
-		logging.error('No DB Query')
-    
-    	return posts
 
 
 class BlogFront(BlogHandler):
@@ -312,6 +220,7 @@ class Register(Signup):
 
 class Login(BlogHandler):
     def get(self):
+    	logging.error('tata')
         self.render('login-form.html')
 
     def post(self):
@@ -417,7 +326,7 @@ class WikiPage(BlogHandler):
         if wikiObj and wikiObj.count() > 0:
         	self.render('wiki.html', wiki = wikiObj[0])
     	else:
-	    	self.redirect('/_edit'+path)
+	    	self.redirect('/question'+path)
     	
    	
 
@@ -432,24 +341,24 @@ class EditWiki(BlogHandler):
         	
         path = path
         
-        if version:
-        	wikiObj = Wiki.getWikiByVersion(path, version)
-        else:
-        	wikiObj = Wiki.getWikiBypath(path)
+        #if version:
+        #	questionObj = Question.getQuestionByName(path)
+        #else:
+        questionObj = Question.getQuestionByName(path)
         
-        if wikiObj and wikiObj.count() > 0:
-		self.render('wiki-edit.html', wiki = wikiObj[0])
+        if questionObj and questionObj.count() > 0:
+		self.render('wiki-edit.html', q = questionObj[0])
 	else:
-   		self.render('wiki-edit.html', wiki = None)
+   		self.render('wiki-edit.html', q = None)
 		
 
       
    def post(self, path):
    	npath = path
-   	content = self.request.get('content')
-   	subject = self.request.get('subject')
+   	question = self.request.get('content')
    	
-   	if subject or content:
+   	
+   	if question:
    		wikiObj = Wiki.getWikiBypath(npath)
    		if wikiObj and wikiObj.count() >= 1:
    			wiki = wikiObj[0]
@@ -511,133 +420,9 @@ class ErrorWiki(BlogHandler):
 
 
 
-class Destination1(ndb.Model):
-	name = ndb.StringProperty()
-	location = ndb.StringProperty()
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
-	created = ndb.DateTimeProperty(auto_now_add = True)
-	lastModified = ndb.DateTimeProperty(auto_now = True)
-	
-	def render(self):
-	    logging.error('in Destination render')
-	   # self._render_text = self.content.replace('\n', '<br>')
-	    return render_str("cravel-content.html", d = self)
+
 
 	
-	@classmethod
-	def getDestinationByName(self, name):
-		dest = Destination1.query().filter(Destination1.name == name)
-		return dest
-		
-	@classmethod
-	def getDestinationByLocation():
-		dest = ndb.GqlQuery("");
-		return dest
-		
-	@classmethod
-	def getDestinationByTypeNearLocation():
-		dest = ndb.GqlQuery("");
-		return dest
-		
-	@classmethod
-	def getAllDestinations(update=True):
-	    	#key = 'top'
-	    	#dests = memcache.get(key)
-		    	
-	    	#if dests is None or update:
-	    	logging.error('DB Query')
-	    	dests = Destination1.query() #Destination1.all().order('-created')
-	    	#	memcache.set(key, dests)
-		#else:
-		#	logging.error('No DB Query')
-		    
-    		return dests
-
-class Trip(ndb.Model):
-	name = ndb.StringProperty()
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
-	created = ndb.DateTimeProperty(auto_now_add = True)
-	lastModified = ndb.DateTimeProperty(auto_now = True)
-	links = ndb.StringProperty()
-	destinations = ndb.StructuredProperty(Destination1, repeated = True)
-		
-	def render(self):
-	    logging.error('in Trip render')
-	   # self._render_text = self.content.replace('\n', '<br>')
-	    return render_str("cravel-content-trip.html", t = self)
-
-	
-	@classmethod
-	def getTripByName(self, name):
-		trips = Trip.query().filter(Trip.name == name)
-		return trips
-		
-	@classmethod
-	def getAllTrips(update=True):
-	    	#key = 'top'
-	    	#dests = memcache.get(key)
-		    	
-	    	#if dests is None or update:
-	    	logging.error('DB Query')
-	    	trips = Trip.query()
-	    	#	memcache.set(key, dests)
-		#else:
-		#	logging.error('No DB Query')
-		    
-    		return trips
-    		
-class Answer(ndb.Model):
-	destinations = ndb.StructuredProperty(Destination1, repeated = True)
-	trips = ndb.StructuredProperty(Trip)
-
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
-	created = ndb.DateTimeProperty(auto_now_add = True)
-	lastModified = ndb.DateTimeProperty(auto_now = True)
-	
-	
-	def render(self):
-	    logging.error('in Answer render')
-	   # self._render_text = self.content.replace('\n', '<br>')
-	    return render_str("cravel-content-answer.html", a = self)
-
-	
-class Question(ndb.Model):
-	question = ndb.StringProperty()
-	answers = ndb.StructuredProperty(Answer)
-
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
-	created = ndb.DateTimeProperty(auto_now_add = True)
-	lastModified = ndb.DateTimeProperty(auto_now = True)
-		
-	def render(self):
-	    logging.error('in Question render')
-	   # self._render_text = self.content.replace('\n', '<br>')
-	    return render_str("cravel-content-question.html", q = self)
-
-	
-	@classmethod
-	def getQuestionByName(self, question):
-		questions = Question.query().filter(Question.question == question)
-		return questions
-		
-	@classmethod
-	def getAllQuestions(update=True):
-	    	#key = 'top'
-	    	#dests = memcache.get(key)
-		    	
-	    	#if dests is None or update:
-	    	logging.error('DB Query')
-	    	questions = Question.query()
-	    	#	memcache.set(key, dests)
-		#else:
-		#	logging.error('No DB Query')
-		    
-    		return questions
-
 
 class Cravel(BlogHandler):
 	def get(self):
@@ -709,6 +494,86 @@ class Cravel(BlogHandler):
 
 
 
+class NewQuestion(BlogHandler):
+    def get(self):
+        user_id = self.read_secure_cookie('user_id')
+        version = self.request.get('v')
+        
+        if not user_id:
+        	self.redirect('/login')
+        	
+   	self.render('question-edit.html', q = None)
+
+    def post(self):
+        global db_timer
+        if not self.user:
+            self.redirect('/')
+
+        question = self.request.get('question')
+        logging.error('NewQuestion.post question:'+question)
+        qurl = question.replace(' ','-')
+        logging.error('NewQuestion.post qurl:'+qurl)
+
+        if question:
+            q = Question(question = question, qurl = '/'+qurl)
+            q = q.put()
+            self.redirect('/%s' % qurl)
+            
+        else:
+            error = "question, please!"
+            self.render("question.html", question=question, error=error)
+            
+class CravelPage(BlogHandler):
+   
+   def get(self, npath=''):
+        user_id = self.read_secure_cookie('user_id')
+        
+        version = self.request.get('v')
+        
+        path = self.request.path + '?'
+        logging.error('CravelPage.get - path:'+path)
+
+        #if version:
+        #	questionObj = '' #Wiki.getWikiByVersion(path, version)
+        #else:
+	questionQuery = Question.getQuestionByPath(path)
+        logging.error(questionQuery)
+        if questionQuery and questionQuery.count() > 0:
+        	logging.error('count > 0')
+        	question = questionQuery.fetch()
+        	logging.error(question)
+        	#BlogHandler.render()#
+        	self.render('cravel-page.html', question = question[0])
+    	else:
+	    	self.redirect('/error')
+	    	
+    
+   def post(self, path):
+   	answer = self.request.get('answer')
+   	destinations = self.request.get('destinations')
+   	destinationList = destinations.split(',')
+   	if answer or destinationList:
+   		qQuery = Question.getQuestionByPath(path+'?')
+   		if qQuery and qQuery.count() >= 1:
+   			question = qQuery.fetch()
+   			#version = wiki.version
+   			#version = version + 1
+   			d = []
+			for dest in destinationList:
+				d.append(Destination1(name = dest))
+								
+   			ans = Answer(ansText = answer, destinations = d)
+   			question[0].answers = ans
+   			question[0].put()
+
+	self.redirect(path)
+    
+    	
+            
+class Error(BlogHandler):
+	def get(self):
+		self.write('error')
+
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)'
 
 	
@@ -723,12 +588,14 @@ app = webapp2.WSGIApplication([#('/', MainPage),
                                #('/blog/([0-9]+).json', PermJson),
                                #('/flush', Flush),
                                #('/unit3/welcome', Unit3Welcome),
-                               #('/signup', Register),
-                               #('/login', Login),
-                               #('/logout', Logout),
-			       #('/_edit' + PAGE_RE, EditWiki),
+                               ('/signup', Register),
+                               ('/login', Login),
+                               ('/logout', Logout),
+			       #('/question' + PAGE_RE, EditWiki),
 			       #('/_history' + PAGE_RE, HistoryWiki),
-                               #(PAGE_RE, WikiPage),
-                               ('/cravel', Cravel)
+                               ('/cravel', Cravel),
+                               ('/question', NewQuestion),
+                               ('/error', Error),
+                               (PAGE_RE, CravelPage),
                                ],
                               debug=True)

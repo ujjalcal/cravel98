@@ -2,13 +2,22 @@
   <div>
 
     <div>
+		<br><br><br>
 		<a href="">{{q.question}}</a>
     </div>
 
     <div >
-
-
+		<br>
+		{% if q.answers %}
 	    {{ q.answers.render() | safe }}
+	    {% endif%}
+
+	    <form action="" method="post">
+		  Answer Text <input type="answer" name="answer" /><br />
+		  Destination <input type="destinations" name="destinations" /><br>
+		  <input type="submit" value="Post Answer" />
+		</form>
+
 	    <br><br>
 
     </div>
