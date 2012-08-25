@@ -523,6 +523,69 @@ class NewQuestion(BlogHandler):
             error = "question, please!"
             self.render("question.html", question=question, error=error)
             
+
+class NewTrip(BlogHandler):
+    def get(self):
+        user_id = self.read_secure_cookie('user_id')
+        version = self.request.get('v')
+        
+        if not user_id:
+        	self.redirect('/login')
+        	
+   	self.render('trip-edit.html', t = None)
+
+    def post(self):
+        global db_timer
+        if not self.user:
+            self.redirect('/')
+
+        tname = self.request.get('tname')
+        logging.error('NewTrip.post tname:'+tname)
+        turl = tname.replace(' ','-')
+        logging.error('NewQuestion.post turl:'+turl)
+
+        if tname:
+            t = Trip(name = tname, turl = '/'+turl)
+            t = t.put()
+#            logging.error(t)
+            self.redirect('/%s' % turl)
+            
+        else:
+            error = "trip, please!"
+            self.render("trip-edit.html", t=trip, error=error)
+
+
+class NewDestination(BlogHandler):
+    def get(self):
+        user_id = self.read_secure_cookie('user_id')
+        version = self.request.get('v')
+        
+        if not user_id:
+        	self.redirect('/login')
+        	
+   	self.render('destination-edit.html', d = None)
+
+    def post(self):
+        global db_timer
+        if not self.user:
+            self.redirect('/')
+
+        dname = self.request.get('dname')
+        dlocation = self.request.get('dlocation')
+        logging.error('NewDestination.post dname:'+dname)
+        durl = dname.replace(' ','-')
+        logging.error('NewDestination.post durl:'+durl)
+
+        if dname:
+            d = Destination1(name = dname, durl = '/'+durl, location = dlocation)
+            d = d.put()
+#            logging.error(t)
+            self.redirect('/%s' % durl)
+            
+        else:
+            error = "destination, please!"
+            self.render("destination-edit.html", t=trip, error=error)
+
 class CravelPage(BlogHandler):
    
    def get(self, npath=''):
@@ -530,10 +593,11 @@ class CravelPage(BlogHandler):
         
         version = self.request.get('v')
         
-        path = self.request.path + '?'
-        logging.error('CravelPage.get - path:'+path)
+        path = self.request.path
+        qpath = path + '?'
+        logging.error('CravelPage.get - path:'+qpath)
 
-	questionQuery = Question.getQuestionByPath(path)
+	questionQuery = Question.getQuestionByPath(qpath)
         #logging.error(questionQuery)
         if questionQuery and questionQuery.count() > 0:
         #	logging.error('count > 0')
@@ -545,9 +609,16 @@ class CravelPage(BlogHandler):
 		tripQuery = Trip.getTripByPath(path)
 		if tripQuery and tripQuery.count() > 0:
 			trip = tripQuery.fetch()
-			self.render('cravel-page.html', trip = trip[0], view=True)
+			self.render('cravel-page.html', trip = trip[0])
 		else:
-	    		self.redirect('/error')
+			destQuery = Destination1.getDestinationByPath(path)
+			if destQuery and destQuery.count() > 0:
+				dest = destQuery.fetch()
+				self.render('cravel-page.html', dest = dest[0])
+			else:
+				self.redirect('/error')
+	    		
+	    		
 	    	
     
    def post(self, path):
@@ -597,6 +668,8 @@ app = webapp2.WSGIApplication([#('/', MainPage),
 			       #('/_history' + PAGE_RE, HistoryWiki),
                                ('/', Cravel),
                                ('/question', NewQuestion),
+                               ('/trip', NewTrip),
+                               ('/destination', NewDestination),
                                ('/error', Error),
                                (PAGE_RE, CravelPage),
                                ],

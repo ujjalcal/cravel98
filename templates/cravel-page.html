@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 
 		{%if question%}
@@ -9,6 +10,11 @@
 
 		{%if trip%}
     	{{ trip.render(view) | safe }}
+    	{%endif%}
+
+
+		{%if dest%}
+    	{{ dest.render(view) | safe }}
     	{%endif%}
 
     <br><br>

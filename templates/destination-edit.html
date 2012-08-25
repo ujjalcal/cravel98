@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Add a Destination</h2>
+
+    <form method="post">
+      <label>
+        <div>Destination</div>
+        <input type="text" name="dname" value="{{d.name}}">
+        <input type="text" name="dlocation" value="{{d.location}}">
+      </label>
+
+      <div class="error">{{error}}</div>
+
+      <input type="submit">
+    </form>
+{% endblock %}

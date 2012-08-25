@@ -7,6 +7,8 @@ from Base import *
 class Destination1(ndb.Model):
 	name = ndb.StringProperty()
 	location = ndb.StringProperty()
+	durl = ndb.StringProperty()
+	
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()
 	created = ndb.DateTimeProperty(auto_now_add = True)
@@ -33,6 +35,11 @@ class Destination1(ndb.Model):
 		dest = ndb.GqlQuery("");
 		return dest
 		
+	@classmethod
+	def getDestinationByPath(self, path):
+		destinations = Destination1.query().filter(Destination1.durl == path)
+		return destinations
+
 	@classmethod
 	def getAllDestinations(update=True):
 	    	#key = 'top'
