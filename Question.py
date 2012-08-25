@@ -19,6 +19,9 @@ class Question(ndb.Model):
 	   # self._render_text = self.content.replace('\n', '<br>')
 	    return render_jinja_str("cravel-content-question.html", q = self, view=view)
 
+	def renderAnsForm(view=False):
+	    logging.error('in render Answer form:')
+	    return render_jinja_str("answerForm.html")
 	
 	@classmethod
 	def getQuestionByName(self, question):

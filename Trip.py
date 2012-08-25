@@ -7,6 +7,7 @@ from Base import *
 
 class Trip(ndb.Model):
 	name = ndb.StringProperty()
+	turl = ndb.StringProperty()
 	links = ndb.StringProperty()
 	destinations = ndb.StructuredProperty(Destination1, repeated = True)
 
@@ -25,7 +26,12 @@ class Trip(ndb.Model):
 	def getTripByName(self, name):
 		trips = Trip.query().filter(Trip.name == name)
 		return trips
-		
+
+	@classmethod
+	def getTripByPath(self, path):
+		trips = Trip.query().filter(Trip.turl == path)
+		return trips
+	
 	@classmethod
 	def getAllTrips(update=True):
 	    	#key = 'top'

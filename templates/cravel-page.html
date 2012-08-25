@@ -2,7 +2,15 @@
 
 {% block content %}
 
+		{%if question%}
     	{{ question.render(view) | safe }}
+    	{%endif%}
+
+
+		{%if trip%}
+    	{{ trip.render(view) | safe }}
+    	{%endif%}
+
     <br><br>
 
 

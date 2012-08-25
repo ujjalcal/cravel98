@@ -533,19 +533,21 @@ class CravelPage(BlogHandler):
         path = self.request.path + '?'
         logging.error('CravelPage.get - path:'+path)
 
-        #if version:
-        #	questionObj = '' #Wiki.getWikiByVersion(path, version)
-        #else:
 	questionQuery = Question.getQuestionByPath(path)
-        logging.error(questionQuery)
+        #logging.error(questionQuery)
         if questionQuery and questionQuery.count() > 0:
-        	logging.error('count > 0')
+        #	logging.error('count > 0')
         	question = questionQuery.fetch()
-        	logging.error(question)
+        #	logging.error(question)
         	#BlogHandler.render()#
         	self.render('cravel-page.html', question = question[0], view=True)
     	else:
-	    	self.redirect('/error')
+		tripQuery = Trip.getTripByPath(path)
+		if tripQuery and tripQuery.count() > 0:
+			trip = tripQuery.fetch()
+			self.render('cravel-page.html', trip = trip[0], view=True)
+		else:
+	    		self.redirect('/error')
 	    	
     
    def post(self, path):

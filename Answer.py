@@ -25,6 +25,6 @@ class Answer(ndb.Model):
 	    return render_jinja_str("cravel-content-answer.html", a = ans)
 
 	@classmethod
-	def renderAnsForm(test=False):
+	def renderAnsForm(view=False):
 	    logging.error('in render Answer form:')
 	    return render_jinja_str("answerForm.html")
