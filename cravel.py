@@ -554,7 +554,6 @@ class NewTrip(BlogHandler):
             error = "trip, please!"
             self.render("trip-edit.html", t=trip, error=error)
 
-
 class NewDestination(BlogHandler):
     def get(self):
         user_id = self.read_secure_cookie('user_id')
