@@ -7,8 +7,10 @@ from Base import *
 
 class Trip(ndb.Model):
 	name = ndb.StringProperty()
+	details = ndb.TextProperty()
 	turl = ndb.StringProperty()
-	links = ndb.StringProperty()
+	links = ndb.StringProperty(repeated = True)
+	tags = ndb.StringProperty(repeated = True)
 	destinations = ndb.KeyProperty(Destination1, repeated = True)
 
 	user_name = ndb.StringProperty()

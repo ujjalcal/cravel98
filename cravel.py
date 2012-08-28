@@ -616,7 +616,8 @@ class CravelPage(BlogHandler):
 			destQuery = Destination1.getDestinationByPath(path)
 			if destQuery and destQuery.count() > 0:
 				dest = destQuery.fetch()
-				self.render('cravel-page.html', dest = dest[0])
+				logging.error(dest[0])
+				self.render('cravel-page.html', dest = dest[0], view=True)
 			else:
 				self.redirect('/error')
 	    		

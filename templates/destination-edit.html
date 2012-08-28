@@ -4,13 +4,22 @@
   <h2>Add a Destination</h2>
 
     <form method="post">
-      <label>
+		<tr><td>
         <div>Destination</div>
-        Name:<input type="text" name="dname" value="{{d.name}}"><br>
-        Location:<input type="text" name="dlocation" value="{{d.location}}"><br>
-        Description:<input type="text" name="description" value="{{d.description}}"><br>
-        Details:<input type="text" name="details" value="{{d.details}}">
-      </label>
+		</td></td><td></tr>
+		<tr><td>
+        <div>Name:</div></td><td><div><input type="text" name="dname" value="{{d.name}}"><br></div>
+        </td></tr>
+		<tr><td>
+        <div>Location:</div></td><td><div><input type="text" name="dlocation" value="{{d.location}}"><br></div>
+        </td></tr>
+		<tr><td>
+        <div>Description:</div></td><td><div><input type="text" name="description" value="{{d.description}}"><br></div>
+        </td></tr>
+		<tr><td>
+        <div>Details:</div></td><td><div><input type="text" name="details" value="{{d.details}}"></div>
+		</td></tr>
+
 
       <div class="error">{{error}}</div>
 
