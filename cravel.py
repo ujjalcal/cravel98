@@ -579,7 +579,7 @@ class NewDestination(BlogHandler):
         logging.error('NewDestination.post durl:'+durl)
 
         if dname:
-            d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation)
+            d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation, details = details)
             d = d.put()
 #            logging.error(t)
             self.redirect('/%s' % durl)

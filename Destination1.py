@@ -9,7 +9,7 @@ class Destination1(ndb.Model):
 	location = ndb.StringProperty()
 	durl = ndb.StringProperty()
 	description = ndb.StringProperty()
-	deatils = ndb.StringProperty()
+	details = ndb.StringProperty()
 	tags = ndb.StringProperty(repeated = True)
 	links = ndb.StringProperty(repeated = True)
 		
