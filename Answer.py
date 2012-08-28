@@ -8,9 +8,9 @@ from Base import *
 
 
 class Answer(ndb.Model):
-	destinations = ndb.StructuredProperty(Destination1, repeated = True)
-	trips = ndb.StructuredProperty(Trip)
 	ansText = ndb.TextProperty()
+	destinations = ndb.KeyProperty(Destination1, repeated = True)
+	trips = ndb.StructuredProperty(Trip)
 
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()

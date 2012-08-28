@@ -10,7 +10,9 @@
 		{% if view: %}
 
 		{% if q.answers %}
-	    {{ q.answers.render(view) | safe }}
+		{%for anskey in q.answers%}
+			{{ anskey.get().render(view) | safe }}
+	    {%endfor%}
 	    {% endif%}
 
 		{{ q.renderAnsForm()|safe}}

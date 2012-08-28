@@ -6,8 +6,10 @@
     <form method="post">
       <label>
         <div>Destination</div>
-        <input type="text" name="dname" value="{{d.name}}">
-        <input type="text" name="dlocation" value="{{d.location}}">
+        Name:<input type="text" name="dname" value="{{d.name}}"><br>
+        Location:<input type="text" name="dlocation" value="{{d.location}}"><br>
+        Description:<input type="text" name="description" value="{{d.description}}"><br>
+        Details:<input type="text" name="details" value="{{d.details}}">
       </label>
 
       <div class="error">{{error}}</div>

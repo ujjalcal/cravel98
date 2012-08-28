@@ -7,7 +7,7 @@ from Base import *
 class Question(ndb.Model):
 	question = ndb.StringProperty()
 	qurl = ndb.StringProperty()
-	answers = ndb.StructuredProperty(Answer)
+	answers = ndb.KeyProperty(Answer, repeated = True)
 
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()

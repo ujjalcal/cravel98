@@ -9,7 +9,7 @@ class Trip(ndb.Model):
 	name = ndb.StringProperty()
 	turl = ndb.StringProperty()
 	links = ndb.StringProperty()
-	destinations = ndb.StructuredProperty(Destination1, repeated = True)
+	destinations = ndb.KeyProperty(Destination1, repeated = True)
 
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()

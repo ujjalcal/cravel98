@@ -8,6 +8,10 @@ class Destination1(ndb.Model):
 	name = ndb.StringProperty()
 	location = ndb.StringProperty()
 	durl = ndb.StringProperty()
+	description = ndb.StringProperty()
+	deatils = ndb.StringProperty()
+	links = ndb.StringProperty(repeated = True)
+	
 	
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()

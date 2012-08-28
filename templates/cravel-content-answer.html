@@ -7,7 +7,7 @@
 
 
 	  {% for d in a.destinations %}
-	    {{ d.render() | safe }}
+	    {{ d.get().render() | safe }}
 	    <br>
 	  {% endfor %}
 
@@ -15,7 +15,7 @@
 	  <br><br>
 	  {% if trips %}
 	  {% for t in a.trips %}
-	    {{ t.render() | safe }}
+	    {{ t.get().render() | safe }}
 	    <br>
 	  {% endfor %}
 	  {% endif %}

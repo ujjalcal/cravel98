@@ -571,12 +571,15 @@ class NewDestination(BlogHandler):
 
         dname = self.request.get('dname')
         dlocation = self.request.get('dlocation')
+        description = self.request.get('description')
+        details = self.request.get('details')
+        
         logging.error('NewDestination.post dname:'+dname)
         durl = dname.replace(' ','-')
         logging.error('NewDestination.post durl:'+durl)
 
         if dname:
-            d = Destination1(name = dname, durl = '/'+durl, location = dlocation)
+            d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation)
             d = d.put()
 #            logging.error(t)
             self.redirect('/%s' % durl)
@@ -632,10 +635,14 @@ class CravelPage(BlogHandler):
    			#version = version + 1
    			d = []
 			for dest in destinationList:
-				d.append(Destination1(name = dest))
+				dest = Destination1.getDestinationByName(dest)
+				d.append(dest.fetch()[0].key)
 								
-   			ans = Answer(ansText = answer, destinations = d)
-   			question[0].answers = ans
+   			ans = Answer(ansText = answer)
+   			ans.destinations = d
+   			ans.put()
+   			
+   			question[0].answers.append(ans.key)
    			question[0].put()
 
 	self.redirect(path)
