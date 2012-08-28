@@ -2,14 +2,17 @@
   <div>
     <div >
 		{% if view: %}
-			{% if q.answers %}
-			{%for anskey in q.answers%}
-				{{ anskey.get().render(view) | safe }}
-			{%endfor%}
-			{% endif%}
-			<br>
-			{{ q.renderAnsForm()|safe}}
-			<br><br>
+		    <div>
+				<div class="post-title"><a href="{{q.qurl}}">{{q.question}}</a></div><br><br>
+				{% if q.answers %}
+				{%for anskey in q.answers%}
+					{{ anskey.get().render(view) | safe }}
+				{%endfor%}
+				{% endif%}
+				<br>
+				{{ q.renderAnsForm()|safe}}
+				<br><br>
+		    </div>
 		{% else %}
 		    <div>
 				<a href="{{q.qurl}}">{{q.question}}</a>
