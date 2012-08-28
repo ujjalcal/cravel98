@@ -4,28 +4,28 @@
 
 <br><br>
 <div class="post-heading">
-	<div class="post-topics">Questions</div>
+	<div class="post-topics">Questions</div><br>
     {% for question in questions %}
 	    {{ question.render() | safe }}
-	    <br><br>
+	    <br>
 	  {% endfor %}
 
 </div>
 
 <div class="post-heading">
-	<div class="post-topics">Trips</div>
+	<div class="post-topics">Trips</div><br>
     {% for trip in trips %}
 	    {{ trip.render() | safe }}
-	    <br><br>
+	    <br>
 	  {% endfor %}
 
 </div>
 
 <div class="post-heading">
-	<div class="post-topics">Destinations</div>
+	<div class="post-topics">Destinations</div><br>
     {% for destination in destinations %}
 	    {{ destination.render() | safe }}
-	    <br><br>
+	    <br>
 	  {% endfor %}
 </div>
 

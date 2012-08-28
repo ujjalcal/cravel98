@@ -10,7 +10,7 @@
 	        </tr>
 	        <tr>
 	        <td>Name:</td>
-	        <td>{{t.name}}</td>
+	        <td><a href="{{t.turl}}">{{t.name}}</a></td>
 	        </tr>
 	        <tr>
 	        <td>Description:</td>
@@ -45,7 +45,7 @@
 
 	  {% else %}
 	   	<div>
-	  		<a href="{{t.turl}}">{{t.name}}</a>
+	  		<a href="{{t.turl}}">{{t.name}}</a> - {{t.description}}
 	    </div>
 	  {% endif %}
 

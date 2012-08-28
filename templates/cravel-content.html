@@ -1,18 +1,16 @@
 <div class="post">
 
-
-	<div >
-		Destination <a  href="{{d.durl}}">{{d.name}}</a>
-	</div>
-
-  </div>
-
   {%if view%}
-  <div >
-  	Description - {{d.description}}<br>
-  	Location - {{d.location}}<br>
-  	Details - {{d.details}}<br>
-
+	  <div >
+		Destination: <a  href="{{d.durl}}">{{d.name}}</a>
+		Description - {{d.description}}<br>
+		Location - {{d.location}}<br>
+		Details - {{d.details}}<br>
+	  </div>
+  {% else %}
+		<div>
+			<a  href="{{d.durl}}">{{d.name}}</a> - {{d.description}}
+		</div>
   {% endif %}
 
 </div>
