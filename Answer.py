@@ -10,7 +10,7 @@ from Base import *
 class Answer(ndb.Model):
 	ansText = ndb.TextProperty()
 	destinations = ndb.KeyProperty(Destination1, repeated = True)
-	trips = ndb.StructuredProperty(Trip)
+	trips = ndb.KeyProperty(Trip, repeated = True)
 
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()

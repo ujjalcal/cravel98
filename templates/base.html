@@ -25,6 +25,13 @@
 	  </form>
   </div>
 
+  <div>
+        <a class="login-link" href="/question">Ask a Question</a>|
+        <a class="login-link" href="/destination">Add a Destination</a>|
+        <a class="login-link" href="/trip">Add a Trip</a>
+
+  </div>
+
   <div class="login-area">
     {% if user %}
       <a class="login-link" href="/_edit{{path}}">edit</a>&nbsp;|&nbsp;<a class="login-link" href="/_history{{path}}">history</a>&nbsp;&nbsp;&nbsp;&nbsp;{{user.name}} (<a class="login-link" href="/logout">logout</a>)

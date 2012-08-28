@@ -28,7 +28,7 @@ body {
     font-size: 13px;
     color: gray;
     position: absolute;
-    top: 10px;
+    top: 25px;
     left: 150px;
 }
 .search-button {
@@ -50,7 +50,7 @@ body {
     font-size: 8px;
     color: black;
     position: absolute;
-    top: 10px;
+    top: 18px;
     
 }
 
