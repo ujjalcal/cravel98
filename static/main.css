@@ -47,10 +47,10 @@ body {
 }
 
 .logo {
-    font-size: 8px;
+    font-size: 10px;
     color: black;
     position: absolute;
-    top: 18px;
+    top: 20px;
     
 }
 
@@ -107,7 +107,7 @@ input[type=submit] {
 .main-title {
     display: block;
     color: #222;
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 30px;

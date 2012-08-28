@@ -11,36 +11,39 @@
 </head>
 
 <body>
+<tr>
+<td>
   <div class="logo">
   	<a href="/" class="main-title">
   	  Cravel
   	</a>
   </div>
-
+</td>
+<td>
   <div class="search-box">
 	  <form action='' method="get">
 	  	<input class='' type='text' name="search" value="Crazy to Travel - simply ask"/>
-	  	<input class="" type='submit' value='Search'/>
+	  	<input class='' type='submit' value='Search'/>
 
 	  </form>
   </div>
-
-  <div>
-        <a class="login-link" href="/question">Ask a Question</a>|
-        <a class="login-link" href="/destination">Add a Destination</a>|
-        <a class="login-link" href="/trip">Add a Trip</a>
-
-  </div>
-
+</td>
+<td>
   <div class="login-area">
     {% if user %}
-      <a class="login-link" href="/_edit{{path}}">edit</a>&nbsp;|&nbsp;<a class="login-link" href="/_history{{path}}">history</a>&nbsp;&nbsp;&nbsp;&nbsp;{{user.name}} (<a class="login-link" href="/logout">logout</a>)
+        <a class="login-link" href="/question">Ask a Question</a>&nbsp;|
+        <a class="login-link" href="/destination">Add a Destination</a>&nbsp;|
+        <a class="login-link" href="/trip">Add a Trip</a>&nbsp;|
+      <!--<a class="login-link" href="/_edit{{path}}">edit</a>&nbsp;|&nbsp;<a class="login-link" href="/_history{{path}}">history</a>&nbsp;&nbsp;&nbsp;&nbsp;-->
+      {{user.name}} (<a class="login-link" href="/logout">logout</a>)
     {% else %}
       <a class="login-link" href="/login">login</a>
       |
       <a class="login-link" href="/signup">signup</a>
     {% endif %}
   </div>
+</td>
+</tr>
   <br>
   <br>
   <br><br>
