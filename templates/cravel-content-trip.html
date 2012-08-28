@@ -1,18 +1,54 @@
 <div>
   <div>
-  	<div>
-		<a href="{{t.turl}}">{{t.name}}</a>
-    </div>
 
     <div >
 	  {%if view%}
+	    	<table>
+			<tr>
+			<td><div>Trip</div></td>
+			<td>-</td>
+	        </tr>
+	        <tr>
+	        <td>Name:</td>
+	        <td>{{t.name}}</td>
+	        </tr>
+	        <tr>
+	        <td>Description:</td>
+	        <td>{{t.description}}</td>
+	        </tr>
+	        <tr>
+	        <td>Details:</td>
+	        <td>{{t.details}}</td>
+	        </tr>
+	        <tr>
+	        <td>Links:</td>
+	        <td>
+	        {%for link in t.links%}
+	        	{{link}}
+	        {%endfor%}
+	        </td>
+	        </tr>
+	        <tr>
+	        <td>Tags:</td>
+	        <td>
+	        {%for tag in t.tags%}
+	        	{{tag}},
+	        {%endfor%}
+	        </td>
+	        </tr>
+			</table>
 
-	  {% for destination in t.destinations %}
-	    {{ destination.render(view) | safe }}
-	    <br><br>
-	  {% endfor %}
+		  {% for destination in t.destinations %}
+			{{ destination.get().render() | safe }}
+			<br><br>
+		  {% endfor %}
 
+	  {% else %}
+	   	<div>
+	  		<a href="{{t.turl}}">{{t.name}}</a>
+	    </div>
 	  {% endif %}
+
     </div>
   </div>
 

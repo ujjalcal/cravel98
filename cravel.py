@@ -9,6 +9,7 @@ import logging
 import time
 import urllib2
 import urllib
+from cutil import striplist
 
 import webapp2
 import jinja2
@@ -540,12 +541,27 @@ class NewTrip(BlogHandler):
             self.redirect('/')
 
         tname = self.request.get('tname')
+        tdescription = self.request.get('tdescription')
+        tdetails = self.request.get('tdetails')
+        tlinks = self.request.get('tlinks')
+        linkList = striplist(tlinks.split(','))
+        ttags = self.request.get('ttags')
+	taglist = striplist(ttags.split(','))
+	
+        tdestinations = self.request.get('tdestinations')
+        d = []
+        destinationList = tdestinations.split(',')
+        for dest in destinationList:
+		#TODO add exception handling - trim spaces
+		dest = Destination1.getDestinationByName(dest.strip())
+		d.append(dest.fetch()[0].key)
+
         logging.error('NewTrip.post tname:'+tname)
         turl = tname.replace(' ','-')
         logging.error('NewQuestion.post turl:'+turl)
 
         if tname:
-            t = Trip(name = tname, turl = '/'+turl)
+            t = Trip(name = tname, turl = '/'+turl, description=tdescription,  details=tdetails, destinations = d, tags = taglist, links=linkList)
             t = t.put()
 #            logging.error(t)
             self.redirect('/%s' % turl)
@@ -588,6 +604,7 @@ class NewDestination(BlogHandler):
             error = "destination, please!"
             self.render("destination-edit.html", t=trip, error=error)
 
+
 class CravelPage(BlogHandler):
    
    def get(self, npath=''):
@@ -611,7 +628,7 @@ class CravelPage(BlogHandler):
 		tripQuery = Trip.getTripByPath(path)
 		if tripQuery and tripQuery.count() > 0:
 			trip = tripQuery.fetch()
-			self.render('cravel-page.html', trip = trip[0])
+			self.render('cravel-page.html', trip = trip[0], view=True)
 		else:
 			destQuery = Destination1.getDestinationByPath(path)
 			if destQuery and destQuery.count() > 0:
@@ -636,6 +653,7 @@ class CravelPage(BlogHandler):
    			#version = version + 1
    			d = []
 			for dest in destinationList:
+				#TODO add exception handling - trim spaces
 				dest = Destination1.getDestinationByName(dest)
 				d.append(dest.fetch()[0].key)
 								

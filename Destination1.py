@@ -7,11 +7,12 @@ from Base import *
 class Destination1(ndb.Model):
 	name = ndb.StringProperty()
 	location = ndb.StringProperty()
-	durl = ndb.StringProperty()
 	description = ndb.StringProperty()
 	details = ndb.StringProperty()
 	tags = ndb.StringProperty(repeated = True)
 	links = ndb.StringProperty(repeated = True)
+
+	durl = ndb.StringProperty()
 		
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()

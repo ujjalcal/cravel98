@@ -4,10 +4,36 @@
   <h2>Add a Trip</h2>
 
     <form method="post">
-      <label>
-        <div>Trip</div>
-        <input type="text" name="tname" value="{{t.name}}">
-      </label>
+    	<table>
+		<tr>
+		<td><div>Trip</div></td>
+		<td>-</td>
+        </tr>
+        <tr>
+        <td>Name:</td>
+        <td><input type="text" name="tname" value="{{t.name}}"></td>
+        </tr>
+        <tr>
+        <td>Description:</td>
+        <td><input type="text" name="tdescription" value="{{t.dscription}}"></td>
+        </tr>
+        <tr>
+        <td>Details:</td>
+        <td><input type="text" name="tdetails" value="{{t.details}}"></td>
+        </tr>
+        <tr>
+        <td>Destinations(comma seperated):</td>
+        <td><input type="text" name="tdestinations" value="{{t.destinations}}"></td>
+        </tr>
+        <tr>
+        <td>Links:</td>
+        <td><input type="text" name="tlinks" value="{{t.links}}"></td>
+        </tr>
+        <tr>
+        <td>Tags:</td>
+        <td><input type="text" name="ttags" value="{{t.tags}}"></td>
+        </tr>
+		</table>
 
       <div class="error">{{error}}</div>
 

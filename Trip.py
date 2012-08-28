@@ -7,11 +7,13 @@ from Base import *
 
 class Trip(ndb.Model):
 	name = ndb.StringProperty()
+	description = ndb.StringProperty()
 	details = ndb.TextProperty()
-	turl = ndb.StringProperty()
 	links = ndb.StringProperty(repeated = True)
 	tags = ndb.StringProperty(repeated = True)
 	destinations = ndb.KeyProperty(Destination1, repeated = True)
+
+	turl = ndb.StringProperty()
 
 	user_name = ndb.StringProperty()
 	user_id = ndb.StringProperty()
@@ -21,7 +23,7 @@ class Trip(ndb.Model):
 	def render(self, view=False):
 	    logging.error('in Trip render')
 	   # self._render_text = self.content.replace('\n', '<br>')
-	    return render_jinja_str("cravel-content-trip.html", t = self)
+	    return render_jinja_str("cravel-content-trip.html", t = self, view=view)
 
 	
 	@classmethod
