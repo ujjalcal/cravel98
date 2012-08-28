@@ -3,6 +3,8 @@ from google.appengine.api import memcache
 import logging
 import hmac
 import hashlib
+import random
+from string import letters
 
 secret = 'fart'
 
