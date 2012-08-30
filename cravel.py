@@ -512,13 +512,14 @@ class NewQuestion(BlogHandler):
         if not self.user:
             self.redirect('/')
 
+	ukey = self.user.key
         question = self.request.get('question')
         #logging.error('NewQuestion.post question:'+question)
         qurl = question.replace(' ','-')
         logging.error('NewQuestion.post qurl:'+qurl)
 
         if question:
-            q = Question(question = question, qurl = '/'+qurl)
+            q = Question(question = question, qurl = '/'+qurl, added_by = ukey)
             q = q.put()
             self.redirect('/%s' % qurl)
             
@@ -658,8 +659,10 @@ class CravelPage(BlogHandler):
    			d = []
 			for dest in destinationList:
 				#TODO add exception handling - trim spaces
-				dest = Destination1.getDestinationByName(dest)
-				d.append(dest.fetch()[0].key)
+				#logging.error('@@@@@@@ dest @@@@ %s' % dest)
+				dest = Destination1.getDestinationByName(dest.strip())
+				if dest and dest.count()>0:
+					d.append(dest.fetch()[0].key)
 								
    			ans = Answer(ansText = answer)
    			ans.destinations = d
