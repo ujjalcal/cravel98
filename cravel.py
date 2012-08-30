@@ -54,7 +54,7 @@ class BlogHandler(webapp2.RequestHandler):
         params['curr_time'] = round(time.time() - db_timer)
         params['path'] = self.request.path
       
-      	logging.error(params)
+      	#logging.error(params)
         return render_str_final(template, **params)
 
     def render(self, template, **kw):
@@ -76,7 +76,7 @@ class BlogHandler(webapp2.RequestHandler):
         return cookie_val and check_secure_val(cookie_val)
 
     def login(self, user):
-    	logging.error(user.key)
+    	#logging.error(user.key)
         self.set_secure_cookie('user_id', str(user.key.id()))
 
     def logout(self):
@@ -85,7 +85,7 @@ class BlogHandler(webapp2.RequestHandler):
     def initialize(self, *a, **kw):
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
-        logging.error('****u***%s' % uid)
+        logging.error('****initialize***%s' % uid)
         self.user = uid and User.by_id(int(uid))
         #logging.error('*******%s' % self.user)
         
@@ -430,7 +430,7 @@ class ErrorWiki(BlogHandler):
 class Cravel(BlogHandler):
 	def get(self):
 	
-		logging.error('Cravel.get')
+		#logging.error('Cravel.get')
 		#self.loadData()
 
 	        user_id = self.read_secure_cookie('user_id')
@@ -513,7 +513,7 @@ class NewQuestion(BlogHandler):
             self.redirect('/')
 
         question = self.request.get('question')
-        logging.error('NewQuestion.post question:'+question)
+        #logging.error('NewQuestion.post question:'+question)
         qurl = question.replace(' ','-')
         logging.error('NewQuestion.post qurl:'+qurl)
 
@@ -558,9 +558,9 @@ class NewTrip(BlogHandler):
 		dest = Destination1.getDestinationByName(dest.strip())
 		d.append(dest.fetch()[0].key)
 
-        logging.error('NewTrip.post tname:'+tname)
+        #logging.error('NewTrip.post tname:'+tname)
         turl = tname.replace(' ','-')
-        logging.error('NewQuestion.post turl:'+turl)
+        logging.error('NewTrip.post turl:'+turl)
 
         if tname:
             t = Trip(name = tname, turl = '/'+turl, description=tdescription,  details=tdetails, destinations = d, tags = taglist, links=linkList)
@@ -591,9 +591,9 @@ class NewDestination(BlogHandler):
         dlocation = self.request.get('dlocation')
         description = self.request.get('description')
         details = self.request.get('details')
-        ukey = Users.by_id(self.user).key()
-        
-        logging.error('NewDestination.post dname:'+dname)
+        ukey = self.user.key
+
+        #logging.error('NewDestination.post dname:'+dname)
         durl = dname.replace(' ','-')
         logging.error('NewDestination.post durl:'+durl)
 
@@ -636,7 +636,7 @@ class CravelPage(BlogHandler):
 			destQuery = Destination1.getDestinationByPath(path)
 			if destQuery and destQuery.count() > 0:
 				dest = destQuery.fetch()
-				logging.error(dest[0])
+				#logging.error(dest[0])
 				self.render('cravel-page.html', dest = dest[0], view=True)
 			else:
 				self.redirect('/error')

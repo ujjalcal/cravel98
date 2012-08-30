@@ -41,10 +41,12 @@ class User(ndb.Model):
 
     @classmethod
     def by_id(cls, uid):
-        uquery = User.get_by_id(uid, users_key())
-        logging.error('***by_id****%s' % uquery)
+        logging.error('***uid****%s' % uid)
+        logging.error('***users_key****%s' % users_key())
+        user_entity = User.get_by_id(uid, users_key())
+        #logging.error('***by_id****%s' % uquery)
         #uquery = User.query().filter(User. == uid)
-        return uquery
+        return user_entity
 
     @classmethod
     def by_name(cls, name):
