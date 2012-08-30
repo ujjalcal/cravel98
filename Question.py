@@ -3,6 +3,7 @@ from google.appengine.api import memcache
 import logging
 from Answer import *
 from Base import *
+from Users import *
 
 class Question(ndb.Model):
 	question = ndb.StringProperty()
@@ -11,9 +12,9 @@ class Question(ndb.Model):
 
 	qurl = ndb.StringProperty()
 
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
+	added_by = ndb.KeyProperty(User)
 	created = ndb.DateTimeProperty(auto_now_add = True)
+	last_updated_by = ndb.KeyProperty(User)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
 		
 	def render(self, view=False):

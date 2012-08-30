@@ -3,6 +3,7 @@ from google.appengine.api import memcache
 import logging
 from Destination1 import *
 from Base import *
+from Users import *
 
 
 class Trip(ndb.Model):
@@ -12,12 +13,13 @@ class Trip(ndb.Model):
 	links = ndb.StringProperty(repeated = True)
 	tags = ndb.StringProperty(repeated = True)
 	destinations = ndb.KeyProperty(Destination1, repeated = True)
-
+	isPublic = ndb.BooleanProperty()
+	
 	turl = ndb.StringProperty()
 
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
+	added_by = ndb.KeyProperty(User)
 	created = ndb.DateTimeProperty(auto_now_add = True)
+	last_updated_by = ndb.KeyProperty(User)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
 		
 	def render(self, view=False):

@@ -542,6 +542,7 @@ class NewTrip(BlogHandler):
         if not self.user:
             self.redirect('/')
 
+        ukey = self.user.key
         tname = self.request.get('tname')
         tdescription = self.request.get('tdescription')
         tdetails = self.request.get('tdetails')
@@ -563,7 +564,7 @@ class NewTrip(BlogHandler):
         logging.error('NewTrip.post turl:'+turl)
 
         if tname:
-            t = Trip(name = tname, turl = '/'+turl, description=tdescription,  details=tdetails, destinations = d, tags = taglist, links=linkList)
+            t = Trip(name = tname, turl = '/'+turl, description=tdescription,  details=tdetails, destinations = d, tags = taglist, links=linkList, added_by = ukey)
             t = t.put()
 #            logging.error(t)
             self.redirect('/%s' % turl)
