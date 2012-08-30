@@ -3,6 +3,7 @@ from google.appengine.api import memcache
 import logging
 
 from Base import *
+from Users import *
 
 class Destination1(ndb.Model):
 	name = ndb.StringProperty()
@@ -14,9 +15,9 @@ class Destination1(ndb.Model):
 
 	durl = ndb.StringProperty()
 		
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
+	added_by = ndb.KeyProperty(User)
 	created = ndb.DateTimeProperty(auto_now_add = True)
+	last_updated_by = ndb.KeyProperty(User)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
 	
 	def render(self, view=False):

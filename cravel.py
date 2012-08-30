@@ -76,7 +76,8 @@ class BlogHandler(webapp2.RequestHandler):
         return cookie_val and check_secure_val(cookie_val)
 
     def login(self, user):
-        self.set_secure_cookie('user_id', str(user.key().id()))
+    	logging.error(user.key)
+        self.set_secure_cookie('user_id', str(user.key.id()))
 
     def logout(self):
         self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
@@ -84,8 +85,10 @@ class BlogHandler(webapp2.RequestHandler):
     def initialize(self, *a, **kw):
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
+        logging.error('****u***%s' % uid)
         self.user = uid and User.by_id(int(uid))
-
+        #logging.error('*******%s' % self.user)
+        
 class MainPage(BlogHandler):
   def get(self):
       self.write('Hi this is the Cravel - the Youtube for Travel. <br><br> Please goto the <a href="/feed">feed</a> url below to see recent postings.')
@@ -221,7 +224,6 @@ class Register(Signup):
 
 class Login(BlogHandler):
     def get(self):
-    	logging.error('tata')
         self.render('login-form.html')
 
     def post(self):
@@ -589,13 +591,14 @@ class NewDestination(BlogHandler):
         dlocation = self.request.get('dlocation')
         description = self.request.get('description')
         details = self.request.get('details')
+        ukey = Users.by_id(self.user).key()
         
         logging.error('NewDestination.post dname:'+dname)
         durl = dname.replace(' ','-')
         logging.error('NewDestination.post durl:'+durl)
 
         if dname:
-            d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation, details = details)
+            d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation, details = details, added_by = ukey)
             d = d.put()
 #            logging.error(t)
             self.redirect('/%s' % durl)
