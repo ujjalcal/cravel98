@@ -9,7 +9,7 @@
 	  </div>
   {% else %}
 		<div>
-			<a  href="{{d.durl}}">{{d.name}}</a> - {{d.description}}
+			<a  href="{{d.durl}}">{{d.name}}</a> - {{d.description}}, added by {{d.added_by.get().render(view)|safe}}
 		</div>
   {% endif %}
 
