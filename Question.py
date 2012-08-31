@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
 import logging
+
 from Answer import *
 from Base import *
 from Users import *
@@ -49,3 +50,6 @@ class Question(ndb.Model):
 		#	logging.error('No DB Query')
 		    
     		return questions
+    		
+	def addedByUser(sefl):    		
+		user = self.added_by.kind(),int(self.added_by.id()).get().name

@@ -16,7 +16,7 @@
 		    </div>
 		{% else %}
 		    <div>
-				<a href="{{q.qurl}}">{{q.question}}</a>
+				<a href="{{q.qurl}}">{{q.question}}</a> was asked by {{q.added_by.get().render(view)|safe}}
 		    </div>
 		{%endif%}
 

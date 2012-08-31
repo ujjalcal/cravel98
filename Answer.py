@@ -12,9 +12,9 @@ class Answer(ndb.Model):
 	destinations = ndb.KeyProperty(Destination1, repeated = True)
 	trips = ndb.KeyProperty(Trip, repeated = True)
 
-	user_name = ndb.StringProperty()
-	user_id = ndb.StringProperty()
+	added_by = ndb.KeyProperty(User)
 	created = ndb.DateTimeProperty(auto_now_add = True)
+	last_updated_by = ndb.KeyProperty(User)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
 	
 	

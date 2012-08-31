@@ -5,6 +5,7 @@ import hmac
 import hashlib
 import random
 from string import letters
+from Base import *
 
 secret = 'fart'
 
@@ -39,10 +40,20 @@ class User(ndb.Model):
     pw_hash = ndb.StringProperty(required = True)
     email = ndb.StringProperty()
 
+    uurl = ndb.StringProperty()
+
+    created = ndb.DateTimeProperty(auto_now_add = True)
+    lastModified = ndb.DateTimeProperty(auto_now = True)
+
+    def render(self, view=False):
+	    logging.error('in User render')
+	   # self._render_text = self.content.replace('\n', '<br>')
+	    return render_jinja_str("cravel-content-user.html", u = self, view=view)
+
     @classmethod
     def by_id(cls, uid):
-        logging.error('***uid****%s' % uid)
-        logging.error('***users_key****%s' % users_key())
+        #logging.error('***uid****%s' % uid)
+        #logging.error('***users_key****%s' % users_key())
         user_entity = User.get_by_id(uid, users_key())
         #logging.error('***by_id****%s' % uquery)
         #uquery = User.query().filter(User. == uid)
@@ -55,11 +66,12 @@ class User(ndb.Model):
         return uquery
 
     @classmethod
-    def register(cls, name, pw, email = None):
+    def register(cls, name, pw, uurl, email = None):
         pw_hash = make_pw_hash(name, pw)
         return User(parent = users_key(),
                     name = name,
                     pw_hash = pw_hash,
+                    uurl = uurl,
                     email = email)
 
     @classmethod
@@ -71,3 +83,7 @@ class User(ndb.Model):
         #	logging.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %s' % u)
         	if u and valid_pw(name, pw, u.pw_hash):
         	    return u
+    @classmethod
+    def getUserByPath(self, path):
+    	userQuery = User.query().filter(User.uurl == path)
+	return userQuery

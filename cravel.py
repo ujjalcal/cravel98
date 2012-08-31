@@ -211,12 +211,16 @@ class Unit2Signup(Signup):
 class Register(Signup):
     def done(self):
         #make sure the user doesn't already exist
+
         u = User.by_name(self.username)
-        if u:
+        logging.error('@@@@@##### %s' % u)
+        logging.error('@@@@@##### %s' % u.count())
+        if u and u.count()>0:
             msg = 'That user already exists.'
             self.render('signup-form.html', error_username = msg)
         else:
-            u = User.register(self.username, self.password, self.email)
+	    uurl = "/"+self.username
+            u = User.register(self.username, self.password, uurl, self.email)
             u.put()
 
             self.login(u)
@@ -588,12 +592,12 @@ class NewDestination(BlogHandler):
         global db_timer
         if not self.user:
             self.redirect('/')
+        ukey = self.user.key
 
         dname = self.request.get('dname')
         dlocation = self.request.get('dlocation')
         description = self.request.get('description')
         details = self.request.get('details')
-        ukey = self.user.key
 
         #logging.error('NewDestination.post dname:'+dname)
         durl = dname.replace(' ','-')
@@ -641,12 +645,24 @@ class CravelPage(BlogHandler):
 				#logging.error(dest[0])
 				self.render('cravel-page.html', dest = dest[0], view=True)
 			else:
-				self.redirect('/error')
+				userQuery = User.getUserByPath(path)
+				if userQuery and userQuery.count() > 0:
+					user = userQuery.fetch()
+					#logging.error(dest[0])
+					self.render('cravel-page.html', user = user[0], view=True)
+				else:
+					self.redirect('/error')
 	    		
 	    		
 	    	
-    
+   
+   ##Posting new Answer for a Question
    def post(self, path):
+   
+        if not self.user:
+            self.redirect('/')
+
+        ukey = self.user.key
    	answer = self.request.get('answer')
    	destinations = self.request.get('destinations')
    	destinationList = destinations.split(',')
@@ -664,7 +680,7 @@ class CravelPage(BlogHandler):
 				if dest and dest.count()>0:
 					d.append(dest.fetch()[0].key)
 								
-   			ans = Answer(ansText = answer)
+   			ans = Answer(ansText = answer, added_by=ukey)
    			ans.destinations = d
    			ans.put()
    			

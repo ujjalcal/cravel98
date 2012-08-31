@@ -3,6 +3,9 @@
 
     <div >
 
+	  {% if a.added_by %}
+	  	{{a.added_by.get().render(view)|safe}} answered the Question -- <br>
+	  {%endif%}
 	  {{ a.ansText }}
 
 
@@ -17,6 +20,8 @@
 	    <br>
 	  {% endfor %}
 	  {% endif %}
+
+
 
     </div>
   </div>
