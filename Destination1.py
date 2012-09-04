@@ -7,6 +7,7 @@ from Users import *
 
 class Destination1(ndb.Model):
 	name = ndb.StringProperty()
+	search_name = ndb.StringProperty()
 	location = ndb.StringProperty()
 	description = ndb.StringProperty()
 	details = ndb.StringProperty()
@@ -23,6 +24,11 @@ class Destination1(ndb.Model):
 	last_updated_by = ndb.KeyProperty(User)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
 	
+ 	
+  	def _pre_put_hook(self):
+		self.search_name = self.name.upper()
+		
+
 	def render(self, view=False):
 	    logging.error('in Destination render')
 	   # self._render_text = self.content.replace('\n', '<br>')
@@ -31,7 +37,8 @@ class Destination1(ndb.Model):
 	
 	@classmethod
 	def getDestinationByName(self, name):
-		dest = Destination1.query().filter(Destination1.name == name)
+		name = name.upper()
+		dest = Destination1.query().filter(Destination1.search_name == name)
 		return dest
 		
 	@classmethod

@@ -8,6 +8,7 @@ from Users import *
 
 class Trip(ndb.Model):
 	name = ndb.StringProperty()
+	search_name = ndb.StringProperty()
 	description = ndb.StringProperty()
 	details = ndb.TextProperty()
 	links = ndb.StringProperty(repeated = True)
@@ -21,7 +22,11 @@ class Trip(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add = True)
 	last_updated_by = ndb.KeyProperty(User)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
-		
+	
+  	def _pre_put_hook(self):
+		self.search_name = self.name.upper()
+	
+	
 	def render(self, view=False):
 	    logging.error('in Trip render')
 	   # self._render_text = self.content.replace('\n', '<br>')
@@ -30,7 +35,8 @@ class Trip(ndb.Model):
 	
 	@classmethod
 	def getTripByName(self, name):
-		trips = Trip.query().filter(Trip.name == name)
+		name = name.upper()
+		trips = Trip.query().filter(Trip.search_name == name)
 		return trips
 
 	@classmethod

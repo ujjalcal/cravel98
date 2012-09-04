@@ -37,6 +37,7 @@ def users_key(group = 'default'):
 
 class User(ndb.Model):
     name = ndb.StringProperty(required = True)
+    search_name = ndb.StringProperty(required = True)
     pw_hash = ndb.StringProperty(required = True)
     email = ndb.StringProperty()
 
@@ -44,6 +45,9 @@ class User(ndb.Model):
 
     created = ndb.DateTimeProperty(auto_now_add = True)
     lastModified = ndb.DateTimeProperty(auto_now = True)
+
+    def _pre_put_hook(self):
+	self.search_name = self.name.upper()
 
     def render(self, view=False):
 	    logging.error('in User render')
@@ -62,7 +66,8 @@ class User(ndb.Model):
     @classmethod
     def by_name(cls, name):
         #u = User.all().filter('name =', name).get()
-        uquery = User.query().filter(User.name == name)
+        name = name.upper()
+        uquery = User.query().filter(User.search_name == name)
         return uquery
 
     @classmethod

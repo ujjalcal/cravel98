@@ -8,6 +8,7 @@ from Users import *
 
 class Question(ndb.Model):
 	question = ndb.StringProperty()
+	search_question = ndb.StringProperty()
 	tags = ndb.StringProperty(repeated = True)
 	answers = ndb.KeyProperty(Answer, repeated = True)
 
@@ -17,6 +18,9 @@ class Question(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add = True)
 	last_updated_by = ndb.KeyProperty(User)
 	lastModified = ndb.DateTimeProperty(auto_now = True)
+
+  	def _pre_put_hook(self):
+		self.search_question = self.question.upper()
 		
 	def render(self, view=False):
 	    logging.error('in Question render')
@@ -29,7 +33,8 @@ class Question(ndb.Model):
 	
 	@classmethod
 	def getQuestionByName(self, question):
-		questions = Question.query().filter(Question.question == question)
+		question = question.upper()
+		questions = Question.query().filter(Question.search_question == question)
 		return questions
 
 	@classmethod

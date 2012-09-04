@@ -612,6 +612,7 @@ class NewDestination(BlogHandler):
 
         if dname:
             d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation, details = details, added_by = ukey, videos = videos, pictures = pictures, map = map)
+            
             d = d.put()
 #            logging.error(t)
             self.redirect('/%s' % durl)
