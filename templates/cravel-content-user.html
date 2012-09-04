@@ -1,18 +1,6 @@
 		{% if view: %}
-		    <div>
-				<div class="post-title"></div>
-				{{u.name}}
-				<br>
-				{{u.email}}
-
-				<br>
-				Other Details -
-				<br>
-				I read, write, think about and publish lesbian-themed Japanese comics. I'm passionate about social media, because I like talking to and learning from interesting people.
-
-I believe that we should have the right to read and write whatever the hell
-		    </div>
+				<a class="user-link" href="{{u.name}}"><b>{{u.name}}</b></a>
 		{% else %}
-				<a href="{{u.name}}">{{u.name}}</a>
+				<a class="user-link" href="{{u.name}}"><b>{{u.name}}</b></a>
 		{%endif%}
 

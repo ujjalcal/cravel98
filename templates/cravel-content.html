@@ -2,15 +2,18 @@
 
   {%if view%}
 	  <div >
-		<div class='post-title'>Destination: <a  href="{{d.durl}}">{{d.name}}</a></div><br><br>
-		Description - {{d.description}}<br>
-		Location - {{d.location}}<br>
-		Details - {{d.details}}<br>
+		<div class='post-title'>Destination: <a class="thing-link"  href="{{d.durl}}">{{d.name}}</a>{{d.map|safe}}</div><br>
+		{{d.description}}<br>
+		Location - {{d.location}}<br><br>
+		Details - {{d.details}}<br><br>
+
+		{%for video in d.videos%}
+			{{video|safe}}
+		{%endfor%}
 	  </div>
+
   {% else %}
-		<div>
-			<a  href="{{d.durl}}">{{d.name}}</a> - {{d.description}}, added by {{d.added_by.get().render(view)|safe}}
-		</div>
+			<a class="thing-link"  href="{{d.durl}}">{{d.name}}</a> - {{d.description}}, added by {{d.added_by.get().render(view)|safe}}
   {% endif %}
 
 </div>

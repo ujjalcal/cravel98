@@ -55,7 +55,7 @@ body {
 }
 
 .login-link {
-    color: gray;
+    color: grey;
     text-decoration: none;
 }
 
@@ -67,6 +67,55 @@ body {
     text-decoration: underline;
 }
 
+.action-link {
+    color: grey;
+    text-decoration: none;
+}
+
+.action-link:visited {
+    color: gray;
+}
+
+.action-link:hover {
+    text-decoration: underline;
+}
+
+.user-link {
+    color: #25383C;
+    text-decoration: none;
+}
+.user-link:visited {
+    color: #25383C;
+
+}
+.user-link:hover {
+    text-decoration: underline;
+}
+
+.thing-link {
+    color: #3090C7;
+    text-decoration: none;
+}
+.thing-link:visited {
+    color: #3090C7;
+
+}
+.thing-link:hover {
+    text-decoration: underline;
+}
+
+.thing-heading-link {
+    color: black;
+    font-size:24px;
+    text-decoration: none;
+}
+.thing-heading-link:visited {
+    color: black
+
+}
+.thing-heading-link:hover {
+    text-decoration: underline;
+}
 h2 {
     font-size: 24px;
     font-weight: bold;
@@ -120,7 +169,18 @@ input[type=submit] {
 
 .post-heading {
     position: relative;
-    border-bottom: 3px solid #666;
+    border-bottom: 2px solid #c0c0c0;;
+}
+
+.answer-heading {
+    position: relative;
+    border-bottom: 1px solid #e0e0e0; 
+    #b0b0b0;   
+    #c0c0c0;;
+}
+.question-heading {
+    position: relative;
+    border-bottom: 2px solid #c0c0c0;;
 }
 
 .post-title {

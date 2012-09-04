@@ -13,6 +13,7 @@ from cutil import striplist
 
 import webapp2
 import jinja2
+import oembed
 
 from Post import *
 from Users import *
@@ -598,13 +599,16 @@ class NewDestination(BlogHandler):
         dlocation = self.request.get('dlocation')
         description = self.request.get('description')
         details = self.request.get('details')
+        videos = self.request.get('videos').split(',')
+        pictures = self.request.get('pictures').split(',')
+        map = self.request.get('map')
 
         #logging.error('NewDestination.post dname:'+dname)
         durl = dname.replace(' ','-')
         logging.error('NewDestination.post durl:'+durl)
 
         if dname:
-            d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation, details = details, added_by = ukey)
+            d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation, details = details, added_by = ukey, videos = videos, pictures = pictures, map = map)
             d = d.put()
 #            logging.error(t)
             self.redirect('/%s' % durl)

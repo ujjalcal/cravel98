@@ -3,8 +3,16 @@
     <div >
     	{{error}}
 		{% if view: %}
+			<div class="question-heading">
+				<a class="thing-heading-link" href="{{q.qurl}}">{{q.question}}</a> <br>Asked by {{q.added_by.get().render(view)|safe}}
+				<br><br>
+				<a class="action-link" href="">Edit</a>&nbsp;
+				<a class="action-link" href="">Comment</a>&nbsp;
+				<a class="action-link" href="">Share</a>&nbsp;
+				<a class="action-link" href="">Redirect</a>&nbsp;
+			</div>
 		    <div>
-				<div class="post-title"><a href="{{q.qurl}}">{{q.question}}</a></div><br><br>
+		    	<br>
 				{% if q.answers %}
 				{%for anskey in q.answers%}
 					{{ anskey.get().render(view) | safe }}
@@ -16,7 +24,7 @@
 		    </div>
 		{% else %}
 		    <div>
-				<a href="{{q.qurl}}">{{q.question}}</a> was asked by {{q.added_by.get().render(view)|safe}}
+				<a class="thing-link" href="{{q.qurl}}">{{q.question}}</a> was asked by {{q.added_by.get().render(view)|safe}}
 		    </div>
 		{%endif%}
 

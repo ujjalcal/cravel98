@@ -12,6 +12,9 @@ class Destination1(ndb.Model):
 	details = ndb.StringProperty()
 	tags = ndb.StringProperty(repeated = True)
 	links = ndb.StringProperty(repeated = True)
+	videos = ndb.StringProperty(repeated = True)
+	pictures = ndb.StringProperty(repeated = True)
+	map = ndb.TextProperty()
 
 	durl = ndb.StringProperty()
 		

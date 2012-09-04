@@ -1,26 +1,25 @@
 <div>
   <div>
 
-    <div >
+    <div class="answer-heading">
 
 	  {% if a.added_by %}
-	  	{{a.added_by.get().render(view)|safe}} answered the Question -- <br>
+	  	{{a.added_by.get().render(view)|safe}}, answered the Question <br><br>
 	  {%endif%}
 	  {{ a.ansText }}
-
+	  <br><br>
 
 	  {% for d in a.destinations %}
 	    {{ d.get().render() | safe }}
-	    <br>
 	  {% endfor %}
 
 	  {% if trips %}
 	  {% for t in a.trips %}
 	    {{ t.get().render() | safe }}
-	    <br>
 	  {% endfor %}
 	  {% endif %}
 
+	  <br>
 
 
     </div>

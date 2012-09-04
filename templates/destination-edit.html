@@ -4,22 +4,60 @@
   <h2>Add a Destination</h2>
 
     <form method="post">
-		<tr><td>
-        <div>Destination</div>
-		</td></td><td></tr>
-		<tr><td>
-        <div>Name:</div></td><td><div><input type="text" name="dname" value="{{d.name}}"><br></div>
-        </td></tr>
-		<tr><td>
-        <div>Location:</div></td><td><div><input type="text" name="dlocation" value="{{d.location}}"><br></div>
-        </td></tr>
-		<tr><td>
-        <div>Description:</div></td><td><div><input type="text" name="description" value="{{d.description}}"><br></div>
-        </td></tr>
-		<tr><td>
-        <div>Details:</div></td><td><div><input type="text" name="details" value="{{d.details}}"></div>
-		</td></tr>
-
+		<tr>
+			<td>
+        		<div>Destination</div>
+			</td>
+			<td>
+			</td>
+		</tr>
+		<tr>
+			<td>
+        		<div>Name:</div>
+        	</td>
+        	<td>
+        		<div><input type="text" name="dname" value="{{d.name}}"><br></div>
+        	</td>
+        </tr>
+		<tr>
+			<td>
+        		<div>Location:</div>
+        	</td>
+        	<td>
+        		<div><input type="text" name="dlocation" value="{{d.location}}"><br></div>
+        	</td>
+        </tr>
+		<tr>
+			<td>
+        		<div>Brief Overview:</div>
+        	</td>
+        	<td>
+        		<div><textarea name="description" rows="2" cols="20">{{d.description}}</textarea><br></div>
+        	</td>
+        </tr>
+		<tr>
+			<td>
+        		<div>Details:</div>
+        	</td>
+        	<td>
+        		<div><textarea name="details">{{d.details}}</textarea></div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+        		<div>Videos (urls comma seperated)</div></td><td><div><input type="text" name="videos" value=""></div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+        		<div>Pictures (urls comma seperated)</div></td><td><div><input type="text" name="pictures" value=""></div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+        		<div>Maps</div></td><td><div><input type="text" name="map" value=""></div>
+			</td>
+		</tr>
 
       <div class="error">{{error}}</div>
 

@@ -11,6 +11,7 @@ class Answer(ndb.Model):
 	ansText = ndb.TextProperty()
 	destinations = ndb.KeyProperty(Destination1, repeated = True)
 	trips = ndb.KeyProperty(Trip, repeated = True)
+	
 
 	added_by = ndb.KeyProperty(User)
 	created = ndb.DateTimeProperty(auto_now_add = True)
