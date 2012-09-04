@@ -1,6 +1,11 @@
 		{% if view: %}
-				<a class="user-link" href="{{u.name}}"><b>{{u.name}}</b></a>
+				<div class="question-heading">
+					<a class="thing-heading-link" href="{{u.name}}"><b>{{u.name}}'s Profile</b></a>
+				</div>
+				<br>
+				name - {{u.name}}<br>
+				email - {{u.email}}<br>
 		{% else %}
-				<a class="user-link" href="{{u.name}}"><b>{{u.name}}</b></a>
+					<a class="user-link" href="{{u.name}}"><b>{{u.name}}</b></a>
 		{%endif%}
 

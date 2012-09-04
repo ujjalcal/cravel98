@@ -2,7 +2,10 @@
 
   {%if view%}
 	  <div >
-		<div class='post-title'>Destination: <a class="thing-link"  href="{{d.durl}}">{{d.name}}</a>{{d.map|safe}}</div><br>
+		<div class='question-heading'>
+			<a class="thing-heading-link"  href="{{d.durl}}">{{d.name}}</a>{{d.map|safe}}
+		</div>
+		<br>
 		{{d.description}}<br>
 		Location - {{d.location}}<br><br>
 		Details - {{d.details}}<br><br>
@@ -13,7 +16,7 @@
 	  </div>
 
   {% else %}
-			<a class="thing-link"  href="{{d.durl}}">{{d.name}}</a> - {{d.description}}, added by {{d.added_by.get().render(view)|safe}}
+			<a class="thing-link"  href="{{d.durl}}">{{d.name}}</a> - {{d.description}}, added by {{d.added_by.get().render()|safe}}
   {% endif %}
 
 </div>

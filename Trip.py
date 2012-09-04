@@ -45,7 +45,7 @@ class Trip(ndb.Model):
 		    	
 	    	#if dests is None or update:
 	    	logging.error('DB Query')
-	    	trips = Trip.query()
+	    	trips = Trip.query().order(-Trip.created)
 	    	#	memcache.set(key, dests)
 		#else:
 		#	logging.error('No DB Query')

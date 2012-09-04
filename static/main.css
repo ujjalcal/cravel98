@@ -207,5 +207,51 @@ input[type=submit] {
 
 .post-content {
     margin-top: 5px;
+    width:300px; 
+    height:75px; 
+    
 }
 
+.textarea {
+    margin-top: 5px;
+    width:300px; 
+    height:75px; 
+    
+}
+
+.input {
+    #border: 1px solid black;
+    #background: #2554C7;
+    width:75px; 
+    height:20px;
+    font-size:18px
+}
+.input-heading {
+    #border: 1px solid black;
+    #background: #2554C7;
+    width:75px; 
+    height:30px;
+    font-size:18px
+}
+.input:hover {
+    #border: 1px solid #15317E;
+    #background: #15317E;
+}
+.button {
+    border: none;
+    background: url('/forms/up.png') no-repeat top left;
+    padding: 2px 8px;
+}
+.button:hover {
+    border: none;
+    background: url('/forms/down.png') no-repeat top left;
+    padding: 2px 8px;
+}
+label {
+    display: block;
+    width: 150px;
+    float: left;
+    margin: 2px 4px 6px 4px;
+    text-align: right;
+}
+br { clear: left; }

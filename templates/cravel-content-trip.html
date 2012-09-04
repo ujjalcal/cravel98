@@ -3,10 +3,13 @@
 
     <div >
 	  {%if view%}
+	  		<div class="question-heading">
+	  			<a class="thing-heading-link" href="{{t.turl}}">{{t.name}}</a>
+	  		</div>
 	    	<table>
 	        <tr>
-	        <td><div class="post-title">Trip:</div></td>
-	        <td><a class="thing-link" href="{{t.turl}}">{{t.name}}</a></td>
+	        <td></td>
+	        <td></td>
 	        </tr>
 	        <tr></tr>
 	        <tr></tr>
@@ -45,7 +48,7 @@
 
 	  {% else %}
 	   	<div>
-	  		<a class="thing-link" href="{{t.turl}}">{{t.name}}</a> - {{t.description}}, added by {{t.added_by.get().render(view)|safe}}
+	  		<a class="thing-link" href="{{t.turl}}">{{t.name}}</a> - {{t.description}}, added by {{t.added_by.get().render()|safe}}
 	    </div>
 	  {% endif %}
 

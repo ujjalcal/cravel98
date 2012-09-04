@@ -44,7 +44,7 @@ class Question(ndb.Model):
 		    	
 	    	#if dests is None or update:
 	    	logging.error('DB Query')
-	    	questions = Question.query()
+	    	questions = Question.query().order(-Question.created)
 	    	#	memcache.set(key, dests)
 		#else:
 		#	logging.error('No DB Query')

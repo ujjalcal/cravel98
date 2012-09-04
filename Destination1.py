@@ -56,7 +56,7 @@ class Destination1(ndb.Model):
 		    	
 	    	#if dests is None or update:
 	    	logging.error('DB Query')
-	    	dests = Destination1.query() #Destination1.all().order('-created')
+	    	dests = Destination1.query().order(-Destination1.created) #Destination1.all().order('-created')
 	    	#	memcache.set(key, dests)
 		#else:
 		#	logging.error('No DB Query')

@@ -4,13 +4,11 @@
   <h2>Ask a Question</h2>
 
     <form method="post">
-      <label>
         <div>Question</div>
-        <input type="text" name="question" value="{{q.question}}">
-      </label>
+        <input type="text" name="question" value="{{q.question}}" >
 
       <div class="error">{{error}}</div>
 
-      <input type="submit">
+      <input class="input" style="font-size:12px" type="submit" value="Ask">
     </form>
 {% endblock %}

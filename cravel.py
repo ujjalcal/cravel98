@@ -446,17 +446,17 @@ class Cravel(BlogHandler):
 	        if search:
 	        	destinations = Destination1.getDestinationByName(search)
 		else:	
-			destinations = Destination1.getAllDestinations()
+			destinations = Destination1.getAllDestinations().fetch(10)
 			
 		if search:
 			trips = Trip.getTripByName(search)
 		else:	
-			trips = Trip.getAllTrips()
+			trips = Trip.getAllTrips().fetch(10)
 		
 		if search:
 			questions = Question.getQuestionByName(search)
 		else:	
-			questions = Question.getAllQuestions()
+			questions = Question.getAllQuestions().fetch(10)
 
 
 		#logging.error(dest)
@@ -557,13 +557,16 @@ class NewTrip(BlogHandler):
         ttags = self.request.get('ttags')
 	taglist = striplist(ttags.split(','))
 	
-        tdestinations = self.request.get('tdestinations')
+        tdestinations = self.request.get('tdestinations').strip()
         d = []
-        destinationList = tdestinations.split(',')
-        for dest in destinationList:
-		#TODO add exception handling - trim spaces
-		dest = Destination1.getDestinationByName(dest.strip())
-		d.append(dest.fetch()[0].key)
+        destinationList = striplist(tdestinations.split(','))
+        if len(destinationList)>0:
+		for dest in destinationList:
+			#TODO add exception handling - trim spaces
+			dest = Destination1.getDestinationByName(dest.strip())
+			logging.error(dest.count())
+			if dest and dest.count() > 0:
+				d.append(dest.fetch()[0].key)
 
         #logging.error('NewTrip.post tname:'+tname)
         turl = tname.replace(' ','-')
@@ -641,7 +644,7 @@ class CravelPage(BlogHandler):
 		tripQuery = Trip.getTripByPath(path)
 		if tripQuery and tripQuery.count() > 0:
 			trip = tripQuery.fetch()
-			self.render('cravel-page.html', trip = trip[0], view=True)
+			self.render('cravel-page.html', trip = trip[0], view=True, user=None)
 		else:
 			destQuery = Destination1.getDestinationByPath(path)
 			if destQuery and destQuery.count() > 0:
@@ -650,6 +653,7 @@ class CravelPage(BlogHandler):
 				self.render('cravel-page.html', dest = dest[0], view=True)
 			else:
 				userQuery = User.getUserByPath(path)
+				logging.error("#############user###############")
 				if userQuery and userQuery.count() > 0:
 					user = userQuery.fetch()
 					#logging.error(dest[0])
