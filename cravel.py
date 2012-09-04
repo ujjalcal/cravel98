@@ -681,15 +681,24 @@ class CravelPage(BlogHandler):
    			#version = wiki.version
    			#version = version + 1
    			d = []
+   			t = []
 			for dest in destinationList:
-				#TODO add exception handling - trim spaces
-				#logging.error('@@@@@@@ dest @@@@ %s' % dest)
 				dest = Destination1.getDestinationByName(dest.strip())
+				logging.error("!!!!!!!!!!!!!!")
+				logging.error(dest.count())
 				if dest and dest.count()>0:
 					d.append(dest.fetch()[0].key)
+					
+			for tripStr in destinationList:
+				trip = Trip.getTripByName(tripStr.strip())
+				logging.error("!!!!!!!!!!!!!!")
+				logging.error(trip.count())
+				if trip and trip.count()>0:
+					t.append(trip.fetch()[0].key)
 								
    			ans = Answer(ansText = answer, added_by=ukey)
    			ans.destinations = d
+   			ans.trips = t
    			ans.put()
    			
    			question[0].answers.append(ans.key)

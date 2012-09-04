@@ -13,11 +13,9 @@
 	    {{ d.get().render() | safe }}
 	  {% endfor %}
 
-	  {% if trips %}
 	  {% for t in a.trips %}
 	    {{ t.get().render() | safe }}
 	  {% endfor %}
-	  {% endif %}
 
 	  <br>
 

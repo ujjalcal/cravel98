@@ -29,10 +29,10 @@
         </tr>
 		<tr>
 			<td>
-        		<div>Brief Overview:</div>
+        		<div>Brief Overview(within 10 words):</div>
         	</td>
         	<td>
-        		<div><textarea name="description" rows="2" cols="20">{{d.description}}</textarea><br></div>
+        		<div><input type="text" name="description" value="{{d.description}}"><br></div>
         	</td>
         </tr>
 		<tr>
@@ -40,7 +40,7 @@
         		<div>Details:</div>
         	</td>
         	<td>
-        		<div><textarea name="details">{{d.details}}</textarea></div>
+        		<div><textarea class ="post-content" name="details">{{d.details}}</textarea></div>
 			</td>
 		</tr>
 		<tr>
