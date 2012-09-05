@@ -518,7 +518,9 @@ class NewQuestion(BlogHandler):
             self.redirect('/')
 
 	ukey = self.user.key
-        question = self.request.get('question')
+        question = self.request.get('question').strip()
+        question = question if question[-1:] == '?' else question+'?'
+        
         #logging.error('NewQuestion.post question:'+question)
         qurl = question.replace(' ','-')
         logging.error('NewQuestion.post qurl:'+qurl)

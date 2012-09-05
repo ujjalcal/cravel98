@@ -3,7 +3,12 @@
   {%if view%}
 	  <div >
 		<div class='question-heading'>
-			<a class="thing-heading-link"  href="{{d.durl}}">{{d.name}}</a>{{d.map|safe}}
+			<a class="thing-heading-link"  href="{{d.durl}}">{{d.name}}</a>{{d.map|safe}}<br>Added by {{d.added_by.get().render()|safe}}<br><br>
+			<a class="action-link" href="_edit{{d.durl}}">Edit</a>&nbsp;
+			<a class="action-link" href="">Comment</a>&nbsp;
+			<a class="action-link" href="">Share</a>&nbsp;
+			<a class="action-link" href="">Redirect</a>&nbsp;
+
 		</div>
 		<br>
 		{{d.description}}<br>

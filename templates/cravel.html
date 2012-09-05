@@ -4,29 +4,34 @@
 
 <br><br>
 <div class="post-heading">
+	{%if questions%}
 	<div class="post-topics">Questions</div><br>
     {% for question in questions %}
 	    {{ question.render() | safe }}
 	    <br>
 	  {% endfor %}
-
+	{%endif%}
 </div>
 
 <div class="post-heading">
+	{%if trips%}
 	<div class="post-topics">Trips</div><br>
     {% for trip in trips %}
 	    {{ trip.render() | safe }}
 	    <br>
 	  {% endfor %}
+	{%endif%}
 
 </div>
 
 <div class="post-heading">
+	{%if destinations%}
 	<div class="post-topics">Destinations</div><br>
     {% for destination in destinations %}
 	    {{ destination.render() | safe }}
 	    <br>
 	  {% endfor %}
+	{%endif%}
 </div>
 
 {% endblock %}
