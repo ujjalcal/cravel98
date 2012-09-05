@@ -16,7 +16,23 @@ body {
     top: 10px;
     right: 0px;
 }
+.benner {
+    background: silver;
+}
 
+.main-title {
+    display: block;
+    color: #222;
+    background: silver;
+    font-size: 27px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-decoration: none;
+}
+.main-title:hover {
+	text-decoration: underline;
+}
 .search-area {
     font-size: 13px;
     color: gray;
@@ -24,12 +40,15 @@ body {
     top: 10px;
     left: 150px;
 }
+.search-text:hover{
+    color:gray
+}
 .search-box {
     font-size: 13px;
     color: gray;
     position: absolute;
     top: 25px;
-    left: 150px;
+    left: 100px;
 }
 .search-button {
     font-size: 13px;
@@ -38,14 +57,6 @@ body {
     top: 15px;
     left: 150px;
 }
-.search-butto2 {
-    font-size: 13px;
-    color: gray;
-    position: absolute;
-    top: 15px;
-    left: 250px;
-}
-
 .logo {
     font-size: 10px;
     color: black;
@@ -154,19 +165,6 @@ input[type=submit] {
   font-size: 24px;
 }
 
-.main-title {
-    display: block;
-    color: #222;
-    background: silver;
-    font-size: 35px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 30px;
-    text-decoration: none;
-}
-.main-title:hover {
-	text-decoration: underline;
-}
 
 .post + .post {
     margin-top: 15px;
