@@ -32,7 +32,8 @@
         <a class="login-link" href="/destination">Add a Destination</a>&nbsp;|
         <a class="login-link" href="/trip">Add a Trip</a>&nbsp;|
       <!--<a class="login-link" href="/_edit{{path}}">edit</a>&nbsp;|&nbsp;<a class="login-link" href="/_history{{path}}">history</a>&nbsp;&nbsp;&nbsp;&nbsp;-->
-      {{user.name}} (<a class="login-link" href="/logout">logout</a>)
+      <a class="login-link" href="{{user.uurl}}">{{user.name}}</a>&nbsp;
+      (<a class="login-link" href="/logout">logout</a>)
     {% else %}
       <a class="login-link" href="/login">login</a>
       |
