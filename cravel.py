@@ -220,7 +220,7 @@ class Register(Signup):
             msg = 'That user already exists.'
             self.render('signup-form.html', error_username = msg)
         else:
-	    uurl = "/"+self.username
+	    uurl = "/user/"+self.username
             u = User.register(self.username, self.password, uurl, self.email)
             u.put()
 
@@ -426,18 +426,9 @@ class ErrorWiki(BlogHandler):
 	def get(self):
 		self.response.out.write("invalid url, it should be /_edit/some path")
 
-
-
-
-
-	
-
 class Cravel(BlogHandler):
 	def get(self):
 	
-		#logging.error('Cravel.get')
-		#self.loadData()
-
 	        user_id = self.read_secure_cookie('user_id')
         	
 	        search = self.request.get('search')
@@ -458,47 +449,8 @@ class Cravel(BlogHandler):
 		else:	
 			questions = Question.getAllQuestions().fetch(10)
 
-
-		#logging.error(dest)
-        
         	self.render('cravel.html', destinations = destinations, trips = trips, questions = questions)
 		
-	def loadData(self):
-		dest = Destination1(name = "Darjeeling", location = "India")
-		dest.put()
-		
-		dest = Destination1(name = "Gangtok", location = "India")
-		dest.put()
-
-		dest = Destination1(name = "Sikkim", location = "India")
-		dest.put()
-
-		dest = Destination1(name = "Delhi", location = "India")
-		dest.put()
-
-		trip = Trip(name='Ujjals Trip to Goa', user_name = 'ujjal', user_id = '1', destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')])
-		trip.put()
-		
-		trip = Trip(name='Weekend trip near Kolkata', user_name = 'ujjal', user_id = '1', destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')])
-		trip.put()
-
-		trip = Trip(name='Gateway from Kolkata', user_name = 'ujjal', user_id = '1', destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')])
-		trip.put()
-
-		trip = Trip(name='Honeymoon on the Himalayas', user_name = 'ujjal', user_id = '1', destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')])
-		trip.put()
-
-		question = Question(question='What is the best place to near Kolkata', user_name = 'ujjal', user_id = '1', answers = Answer(destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')]))
-		question.put()
-		
-		question = Question(question='What is the best place to near Delhi', user_name = 'ujjal', user_id = '1', answers = Answer(destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')]))
-		question.put()
-
-		question = Question(question='What is the best place to near Bangalore', user_name = 'ujjal', user_id = '1', answers = Answer(destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')]))
-		question.put()
-
-		question = Question(question='What is the best place to near Mumbai', user_name = 'ujjal', user_id = '1', answers = Answer(destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')]))
-		question.put()
 
 class QuestionHandler(BlogHandler):
     def create_update_question(self):
@@ -866,6 +818,9 @@ class Error(BlogHandler):
 	def get(self):
 		self.write('error')
 
+
+
+	
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)'
 
 	
