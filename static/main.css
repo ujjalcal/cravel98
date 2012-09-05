@@ -24,7 +24,7 @@ body {
     display: block;
     color: #222;
     background: silver;
-    font-size: 27px;
+    font-size: 29px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 30px;
@@ -41,11 +41,11 @@ body {
     left: 150px;
 }
 .search-box {
-    font-size: 13px;
+    font-size: 14px;
     color: gray;
     position: absolute;
     top: 25px;
-    left: 100px;
+    left: 105px;
 }
 .search-button {
     font-size: 13px;
@@ -63,12 +63,12 @@ body {
 }
 
 .login-link {
-    color: grey;
+    color: #41383C;
     text-decoration: none;
 }
 
 .login-link:visited {
-    color: gray;
+    color: #41383C;
 }
 
 .login-link:hover {
