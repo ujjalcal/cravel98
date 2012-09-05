@@ -500,19 +500,8 @@ class Cravel(BlogHandler):
 		question = Question(question='What is the best place to near Mumbai', user_name = 'ujjal', user_id = '1', answers = Answer(destinations = [Destination1(name='Kolkata', location='India'), Destination1(name='Durgapur', location='India')]))
 		question.put()
 
-
-
-class NewQuestion(BlogHandler):
-    def get(self):
-        user_id = self.read_secure_cookie('user_id')
-        version = self.request.get('v')
-        
-        if not user_id:
-        	self.redirect('/login')
-        	
-   	self.render('question-edit.html', q = None)
-
-    def post(self):
+class QuestionHandler(BlogHandler):
+    def create_update_question(self):
         global db_timer
         if not self.user:
             self.redirect('/')
@@ -525,15 +514,70 @@ class NewQuestion(BlogHandler):
         qurl = 'qs/'+question.replace(' ','-')
         logging.error('NewQuestion.post qurl:'+qurl)
 
+        path = self.request.path
+	isEdit = True if path[:6] == '/_edit' else False
+	path = path[6:]+'?' if isEdit else path+'?'
+	
+	logging.error('NewQuestion.post path:'+path)
+	logging.error(isEdit)
         if question:
-            q = Question(question = question, qurl = '/'+qurl, added_by = ukey)
+	    qq = Question.getQuestionByPath(path)
+	    logging.error(qq.count())
+	    if qq and qq.count()>0:
+	    	q = qq.fetch()[0]
+	    	q.last_updated_by = ukey
+	    else:
+	    	q = Question()
+	    	q.added_by = ukey
+	    	
+            q.question = question
+            q.qurl = '/'+qurl
+            
             q = q.put()
             self.redirect('/%s' % qurl)
             
         else:
             error = "question, please!"
-            self.render("question.html", question=question, error=error)
-            
+            self.render("question.html", q=question, error=error)
+    
+
+class NewQuestion(QuestionHandler):
+    def get(self):
+        user_id = self.read_secure_cookie('user_id')
+        version = self.request.get('v')
+        
+        if not user_id:
+        	self.redirect('/login')
+        	
+   	self.render('question-edit.html', q = None)
+
+    def post(self):
+        self.create_update_question()
+
+class EditQuestion(QuestionHandler):
+   
+   def get(self, npath=''):
+        user_id = self.read_secure_cookie('user_id')
+        
+        version = self.request.get('v')
+        
+        pathWithEdit = self.request.path
+        path = pathWithEdit[6:]
+        qpath = path + '?'
+        logging.error('CravelPage.get - path:'+qpath)
+
+	questionQuery = Question.getQuestionByPath(qpath)
+        if questionQuery and questionQuery.count() > 0:
+        	question = questionQuery.fetch()
+        	self.render('question-edit.html', q = question[0], view=True)
+	else:
+		self.redirect('/error')
+	    		
+
+   def post(self, path):
+	self.create_update_question()   
+
+
 class TripHandler(BlogHandler):
 
     def create_update_trip(self):
@@ -817,91 +861,6 @@ class CravelPage(BlogHandler):
     
     
     	
-class EditQuestion(BlogHandler):
-   
-   def get(self, npath=''):
-        user_id = self.read_secure_cookie('user_id')
-        
-        version = self.request.get('v')
-        
-        pathWithEdit = self.request.path
-        path = pathWithEdit[6:]
-        qpath = path + '?'
-        logging.error('CravelPage.get - path:'+qpath)
-
-	questionQuery = Question.getQuestionByPath(qpath)
-        #logging.error(questionQuery)
-        if questionQuery and questionQuery.count() > 0:
-        #	logging.error('count > 0')
-        	question = questionQuery.fetch()
-        #	logging.error(question)
-        	#BlogHandler.render()#
-        	self.render('question-edit.html', question = question[0], view=True)
-    	else:
-		tripQuery = Trip.getTripByPath(path)
-		if tripQuery and tripQuery.count() > 0:
-			trip = tripQuery.fetch()
-			self.render('trip-edit.html', t = trip[0], view=True, user=None)
-		else:
-			destQuery = Destination1.getDestinationByPath(path)
-			if destQuery and destQuery.count() > 0:
-				dest = destQuery.fetch()
-				#logging.error(dest[0])
-				self.render('destination-edit.html', d = dest[0], view=True)
-			else:
-				userQuery = User.getUserByPath(path)
-				logging.error("#############user###############")
-				if userQuery and userQuery.count() > 0:
-					user = userQuery.fetch()
-					#logging.error(dest[0])
-					self.render('cravel-page.html', user = user[0], view=True)
-				else:
-					self.redirect('/error')
-	    		
-	    		
-	    	
-   
-   ##Posting new Answer for a Question
-   def post(self, path):
-   
-        if not self.user:
-            self.redirect('/')
-
-        ukey = self.user.key
-   	answer = self.request.get('answer')
-   	destinations = self.request.get('destinations')
-   	destinationList = destinations.split(',')
-   	if answer or destinationList:
-   		qQuery = Question.getQuestionByPath(path+'?')
-   		if qQuery and qQuery.count() >= 1:
-   			question = qQuery.fetch()
-   			#version = wiki.version
-   			#version = version + 1
-   			d = []
-   			t = []
-			for dest in destinationList:
-				dest = Destination1.getDestinationByName(dest.strip())
-				logging.error("!!!!!!!!!!!!!!")
-				logging.error(dest.count())
-				if dest and dest.count()>0:
-					d.append(dest.fetch()[0].key)
-					
-			for tripStr in destinationList:
-				trip = Trip.getTripByName(tripStr.strip())
-				logging.error("!!!!!!!!!!!!!!")
-				logging.error(trip.count())
-				if trip and trip.count()>0:
-					t.append(trip.fetch()[0].key)
-								
-   			ans = Answer(ansText = answer, added_by=ukey)
-   			ans.destinations = d
-   			ans.trips = t
-   			ans.put()
-   			
-   			question[0].answers.append(ans.key)
-   			question[0].put()
-
-	self.redirect(path)
             
 class Error(BlogHandler):
 	def get(self):
