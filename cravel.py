@@ -762,7 +762,7 @@ class CravelPage(BlogHandler):
 				if userQuery and userQuery.count() > 0:
 					user = userQuery.fetch()
 					#logging.error(dest[0])
-					self.render('cravel-page.html', user = user[0], view=True)
+					self.render('cravel-page.html', u = user[0], view=True)
 				else:
 					self.redirect('/error')
 	    		
