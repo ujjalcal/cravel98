@@ -4,7 +4,12 @@
     <div >
 	  {%if view%}
 	  		<div class="question-heading">
-	  			<a class="thing-heading-link" href="{{t.turl}}">{{t.name}}</a>
+	  			<a class="thing-heading-link" href="{{t.turl}}">{{t.name}}</a><br>Added by {{t.added_by.get().render()|safe}}
+				<br><br>
+				<a class="action-link" href="">Edit</a>&nbsp;
+				<a class="action-link" href="">Comment</a>&nbsp;
+				<a class="action-link" href="">Share</a>&nbsp;
+				<a class="action-link" href="">Redirect</a>&nbsp;
 	  		</div>
 	    	<table>
 	        <tr>

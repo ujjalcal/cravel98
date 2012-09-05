@@ -157,6 +157,7 @@ input[type=submit] {
 .main-title {
     display: block;
     color: #222;
+    background: silver;
     font-size: 35px;
     font-weight: bold;
     text-align: center;
