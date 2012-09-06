@@ -463,7 +463,9 @@ class QuestionHandler(BlogHandler):
         question = question if question[-1:] == '?' else question+'?'
         
         #logging.error('NewQuestion.post question:'+question)
-        qurl = 'qs/'+question.replace(' ','-')
+        #### form the url###
+        qurl = 'qs/'+question.replace(' ','-').replace(',','').replace('/','-')
+        
         logging.error('NewQuestion.post qurl:'+qurl)
 
         path = self.request.path
