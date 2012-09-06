@@ -83,7 +83,7 @@ class User(ndb.Model):
     def login(cls, name, pw):
         u = cls.by_name(name)
         #logging.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %s' % u)
-        if u:
+        if u and u.count()>0:
         	u = u.fetch()[0]
         #	logging.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %s' % u)
         	if u and valid_pw(name, pw, u.pw_hash):

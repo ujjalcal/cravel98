@@ -510,6 +510,8 @@ class EditQuestion(QuestionHandler):
    
    def get(self, npath=''):
         user_id = self.read_secure_cookie('user_id')
+        if not user_id:
+        	self.redirect('/login')
         
         version = self.request.get('v')
         
@@ -611,6 +613,8 @@ class EditTrip(TripHandler):
    def get(self, npath=''):
         user_id = self.read_secure_cookie('user_id')
         
+        if not user_id:
+        	self.redirect('/login')
         version = self.request.get('v')
         
         pathWithEdit = self.request.path
@@ -707,6 +711,8 @@ class EditDestination(DestinationHandler):
    def get(self, npath=''):
         user_id = self.read_secure_cookie('user_id')
         
+        if not user_id:
+        	self.redirect('/login')
         version = self.request.get('v')
         
         pathWithEdit = self.request.path
