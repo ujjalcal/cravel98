@@ -464,7 +464,7 @@ class QuestionHandler(BlogHandler):
         
         #logging.error('NewQuestion.post question:'+question)
         #### form the url###
-        new_question = re.sub('[^a-zA-Z0-9\n\.]', '', question)
+        new_question = re.sub('[^a-zA-Z0-9\n\.]', ' ', question)
 	new_question = new_question[:-1]+'?'
         qurl = 'qs/'+new_question.replace(' ','-')
         
