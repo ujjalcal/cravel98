@@ -9,6 +9,9 @@ import logging
 import time
 import urllib2
 import urllib
+from urlparse import urlparse
+from cgi import parse_qs
+
 from cutil import striplist
 
 import webapp2
@@ -23,6 +26,7 @@ from Destination1 import *
 from Trip import *
 from Base import *
 
+from google.appengine.api import search
 from google.appengine.ext import db
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
@@ -33,6 +37,19 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 
 
 db_timer = time.time()
+
+_Q_INDEX_NAME = "QuestionIndex"
+_D_INDEX_NAME = "DestinationIndex"
+_T_INDEX_NAME = "TripIndex"
+
+def CreateDocument(id, searchT):
+    """Creates a search.Document from content written by the author."""
+
+    # Let the search service supply the document id.
+    return search.Document(
+        fields=[search.TextField(name='id', value=id),
+                search.TextField(name='search', value=searchT)])
+                
 
 def render_str_final(template, **params):
     t = jinja_env.get_template(template)
@@ -431,23 +448,80 @@ class Cravel(BlogHandler):
 	
 	        user_id = self.read_secure_cookie('user_id')
         	
-	        search = self.request.get('search')
-	        logging.error('search:'+search)
+	        searchTxt = self.request.get('search')
+	        '''uri = urlparse(self.request.uri)
+	        searchTxt = ''
+	        if uri.query:
+	            query = parse_qs(uri.query)
+	            logging.error(query)
+	            searchTxt = query['search'][0]
+	        '''
+	        logging.error('search:'+searchTxt)
 	        
-	        if search:
-	        	destinations = Destination1.getDestinationByName(search)
+	        '''
+	        # sort results by questions descending
+	        expr_list = [search.SortExpression(
+	            expression='question', default_value='',
+	            direction=search.SortExpression.DESCENDING)]
+	        # construct the sort options
+	        sort_opts = search.SortOptions(
+	             expressions=expr_list)
+		#construct the query options
+	        query_options = search.QueryOptions(limit=10,sort_options=sort_opts)
+		#construct the query object
+	        query_obj = search.Query(query_string=searchTxt, options=query_options)
+	        results = search.Index(name=_Q_INDEX_NAME).search(query=query_obj)
+	        '''
+		options = search.QueryOptions(returned_fields=['id'])
+	        
+	        
+	        ###simple search
+	        #results = search.Index(name=_Q_INDEX_NAME).search(search.Query(searchTxt))
+		
+		logging.error("----------------------------------------")
+	        #logging.error(results)
+	        
+	        destinations = []			
+	        if searchTxt:
+	        	results = search.Index(name=_D_INDEX_NAME).search(search.Query(searchTxt, options=options))
+	        	if results:
+	        		logging.error("------------------D----------------------")
+	        		for destSD in results:
+	        			for field in destSD.fields:
+	        				destinations.append(Destination1.get_by_id(int(field.value)))
+	        	#destinations = Destination1.getDestinationByName(searchTxt)
 		else:	
 			destinations = Destination1.getAllDestinations().fetch(10)
-			
-		if search:
-			trips = Trip.getTripByName(search)
+		logging.error(destinations)			
+		
+		trips = []
+		if searchTxt:
+		        results = search.Index(name=_T_INDEX_NAME).search(search.Query(searchTxt, options=options))
+	        	if results:
+	        		logging.error("------------------T----------------------")
+	        		for tripSD in results:
+	        			for field in tripSD.fields:
+	        				trips.append(Trip.get_by_id(int(field.value)))
+			#trips = Trip.getTripByName(searchTxt)
 		else:	
 			trips = Trip.getAllTrips().fetch(10)
+		logging.error(trips)			
 		
-		if search:
-			questions = Question.getQuestionByName(search)
+		questions = []
+		if searchTxt:
+		        results = search.Index(name=_Q_INDEX_NAME).search(search.Query(searchTxt, options=options))
+	        	if results:
+	        		logging.error("-------------------Q---------------------")
+	        		for questSD in results:
+	        			logging.error(questSD)
+	        			for field in questSD.fields:
+	        				#logging.error(field.value)
+	        				questions.append(Question.get_by_id(int(field.value)))
+			#questions = Question.getQuestionByName(searchTxt)
 		else:	
 			questions = Question.getAllQuestions().fetch(10)
+			
+		logging.error(questions)			
 
         	self.render('cravel.html', destinations = destinations, trips = trips, questions = questions)
 		
@@ -490,6 +564,8 @@ class QuestionHandler(BlogHandler):
             q.qurl = '/'+qurl
             
             q = q.put()
+            search.Index(name=_Q_INDEX_NAME).add(CreateDocument(str(q.id()), question))
+
             self.redirect('/%s' % qurl)
             
         else:
@@ -591,6 +667,7 @@ class TripHandler(BlogHandler):
 	    t.links=linkList
 	    
             t = t.put()
+	    search.Index(name=_T_INDEX_NAME).add(CreateDocument(str(t.id()), tname))
             self.redirect('/%s' % turl)
             
         else:
@@ -690,6 +767,7 @@ class DestinationHandler(BlogHandler):
 #           d = Destination1(name = dname, durl = '/'+durl, description = description, location = dlocation, details = details, added_by = ukey, videos = videos, pictures = pictures, map = map)
             
             d = d.put()
+            search.Index(name=_D_INDEX_NAME).add(CreateDocument(str(d.id()), dname))
 #           logging.error(t)
             self.redirect('/%s' % durl)
             
