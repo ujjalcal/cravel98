@@ -11,7 +11,8 @@ class Question(ndb.Model):
 	search_question = ndb.StringProperty()
 	tags = ndb.StringProperty(repeated = True)
 	answers = ndb.KeyProperty(Answer, repeated = True)
-
+	tags = ndb.KeyProperty(Tag, repeated = True)
+	
 	qurl = ndb.StringProperty()
 
 	added_by = ndb.KeyProperty(User)

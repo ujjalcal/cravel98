@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
 import logging
+
 from Destination1 import *
 from Base import *
 from Users import *
@@ -12,8 +13,8 @@ class Trip(ndb.Model):
 	description = ndb.StringProperty()
 	details = ndb.TextProperty()
 	links = ndb.StringProperty(repeated = True)
-	tags = ndb.StringProperty(repeated = True)
 	destinations = ndb.KeyProperty(Destination1, repeated = True)
+	tags = ndb.KeyProperty(Tag, repeated = True)
 	isPublic = ndb.BooleanProperty()
 	
 	turl = ndb.StringProperty()

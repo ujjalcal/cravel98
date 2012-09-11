@@ -6,6 +6,7 @@ import hashlib
 import random
 from string import letters
 from Base import *
+from Follow import *
 
 secret = 'fart'
 
@@ -40,7 +41,10 @@ class User(ndb.Model):
     search_name = ndb.StringProperty(required = True)
     pw_hash = ndb.StringProperty(required = True)
     email = ndb.StringProperty()
-
+    
+    follows = ndb.KeyProperty(Follow, repeated=True)
+    followers = ndb.KeyProperty(repeated=True)
+    
     uurl = ndb.StringProperty()
 
     created = ndb.DateTimeProperty(auto_now_add = True)
@@ -92,3 +96,10 @@ class User(ndb.Model):
     def getUserByPath(self, path):
     	userQuery = User.query().filter(User.uurl == path)
 	return userQuery
+	
+    def followUser(self, name, uurl, fukey):
+    	f = follow_a_person(name, uurl, fukey)
+	self.follows.append(f)
+	
+	foll_user = by_id(fukey.id)
+	foll_user.followers.append(self.id)

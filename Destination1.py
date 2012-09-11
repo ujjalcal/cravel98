@@ -4,6 +4,7 @@ import logging
 
 from Base import *
 from Users import *
+from Tag import *
 
 class Destination1(ndb.Model):
 	name = ndb.StringProperty()
@@ -11,10 +12,10 @@ class Destination1(ndb.Model):
 	location = ndb.StringProperty()
 	description = ndb.StringProperty()
 	details = ndb.StringProperty()
-	tags = ndb.StringProperty(repeated = True)
 	links = ndb.StringProperty(repeated = True)
 	videos = ndb.StringProperty(repeated = True)
 	pictures = ndb.StringProperty(repeated = True)
+	tags = ndb.KeyProperty(Tag, repeated = True)
 	map = ndb.TextProperty()
 
 	durl = ndb.StringProperty()
